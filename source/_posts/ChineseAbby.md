@@ -5,8 +5,8 @@ categories: Releases
 tags: Game
 ---
 * [国内Android玩家下载1.7版](http://p6yal4ykc.bkt.clouddn.com/AbbyStar1.7-ninja)
-* [Apple App Store](https://itunes.apple.com/cn/app/id1340116174)
-* [Google Play Store](https://play.google.com/store/apps/details?id=com.BreakSymmetry.AbbyStar)
+* [苹果应用商店](https://itunes.apple.com/cn/app/id1340116174)
+* [谷歌应用商店](https://play.google.com/store/apps/details?id=com.BreakSymmetry.AbbyStar)
 
 ### 更新内容
 Hi，谢谢大家的支持，我们最近更新了一版，IOS，Google play可以更新了， 由于我们没有版号，所以TapTap上更新不了。
