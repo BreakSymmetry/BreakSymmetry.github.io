@@ -12,4 +12,4 @@ You can get Abby Star On:
 * [Amazon App Store]()
 * [TapTap](https://www.taptap.com/app/78946)
 * [4399](http://a.4399.cn/game-id-118811.html)
-* [Download For Chinese Android](http://p6yal4ykc.bkt.clouddn.com/AbbyStar1.7-ninja)
+* [Download For Chinese Android](http://p6yal4ykc.bkt.clouddn.com/AbbyStar1.7.apk)

@@ -4,7 +4,7 @@ date: 2018-04-10 14:22:01
 categories: Releases
 tags: Game
 ---
-* [国内Android玩家下载1.7版](http://p6yal4ykc.bkt.clouddn.com/AbbyStar1.7-ninja)
+* [国内Android玩家下载1.7版](http://p6yal4ykc.bkt.clouddn.com/AbbyStar1.7.apk)
 * [苹果应用商店](https://itunes.apple.com/cn/app/id1340116174)
 * [谷歌应用商店](https://play.google.com/store/apps/details?id=com.BreakSymmetry.AbbyStar)
 
