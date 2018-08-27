@@ -5,7 +5,7 @@ categories: Releases
 tags: Game
 ---
 
-Hi Our new Game 360 Shoot is release, find it here:
+Hi Our new Game Tap Shooter! is released, find it here:
 * [Apple App Store](https://itunes.apple.com/cn/app/id1425725625)
 * [Google Play Store](https://play.google.com/store/apps/details?id=com.BreakSymmetry.TapShooter)
 
