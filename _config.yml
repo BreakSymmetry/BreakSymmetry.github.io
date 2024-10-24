@@ -82,7 +82,7 @@ excerpt_depth: 2
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: git@github.com:BreakSymmetry2018/breaksymmetry.github.io.git
+  repo: git@github.com:BreakSymmetry/BreakSymmetry.github.io.git
   branch: master
 
 #七牛云存储设置
