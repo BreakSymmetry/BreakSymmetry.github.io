@@ -4,9 +4,9 @@ date: 2018-07-24 21:22:01
 categories: Releases
 tags: Game
 ---
-* [国内Android玩家下载1.8版](http://p6yal4ykc.bkt.clouddn.com/AbbyStar1.8.apk)
+<!-- * [国内Android玩家下载1.8版](http://p6yal4ykc.bkt.clouddn.com/AbbyStar1.8.apk)
 * [苹果应用商店](https://itunes.apple.com/cn/app/id1340116174)
-* [谷歌应用商店](https://play.google.com/store/apps/details?id=com.BreakSymmetry.AbbyStar)
+* [谷歌应用商店](https://play.google.com/store/apps/details?id=com.BreakSymmetry.AbbyStar) -->
 
 ### 更新内容：
 1.增加自动瞄准，战斗更爽快啦！
@@ -21,4 +21,4 @@ tags: Game
 10.广告箱子必掉身上的一件武器。
 11.广告传送门可以重新打一次本关。
 
-欢迎加入官方QQ群与我们讨论：799701527
+<!-- 欢迎加入官方QQ群与我们讨论：799701527 -->

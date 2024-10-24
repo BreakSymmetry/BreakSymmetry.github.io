@@ -4,9 +4,9 @@ date: 2018-08-07 11:22:01
 categories: Releases
 tags: Game
 ---
-* [国内Android玩家下载1.9版](http://p6yal4ykc.bkt.clouddn.com/AbbyStar1.9.apk)
+<!-- * [国内Android玩家下载1.9版](http://p6yal4ykc.bkt.clouddn.com/AbbyStar1.9.apk)
 * [苹果应用商店](https://itunes.apple.com/cn/app/id1340116174)
-* [谷歌应用商店](https://play.google.com/store/apps/details?id=com.BreakSymmetry.AbbyStar)
+* [谷歌应用商店](https://play.google.com/store/apps/details?id=com.BreakSymmetry.AbbyStar) -->
 
 ### 更新内容：
 1.增加新手引导
@@ -24,4 +24,4 @@ tags: Game
 {% qnimg AbbyStar/51219.png title:图片标题 alt:图片说明 'class:class1 class2' extend:?imageView2/2/w/300 %}
 <!-- {% qnimg SpinSmash/512.png title:图片标题 alt:图片说明 'class:class1 class2' extend:?-widthwebp %} -->
 
-欢迎加入官方QQ群与我们讨论：799701527
+<!-- 欢迎加入官方QQ群与我们讨论：799701527 -->
