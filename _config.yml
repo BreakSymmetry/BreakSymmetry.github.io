@@ -3,8 +3,8 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Break Symmetry
-subtitle: Game Studio 
+title: 打破对称科技
+subtitle: Break Symmetry Game Studio
 description:
 author: Break Symmetry Game Studio
 language:
@@ -34,7 +34,7 @@ titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab
 filename_case: 0
 render_drafts: false
-post_asset_folder: false
+post_asset_folder: x
 relative_link: false
 future: true
 highlight:
@@ -80,10 +80,10 @@ excerpt_depth: 2
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
-deploy:
-  type: git
-  repo: git@github.com:BreakSymmetry/BreakSymmetry.github.io.git
-  branch: master
+# deploy:
+#   type: git
+#   repo: git@github.com:BreakSymmetry/BreakSymmetry.github.io.git
+#   branch: master
 
 #七牛云存储设置
 ##offline       是否离线. 离线状态将使用本地地址渲染
@@ -100,22 +100,27 @@ deploy:
 ##image/js/css  子参数folder为不同静态资源种类的目录名称，一般不需要改动
 ##image.extend  这是个特殊参数，用于生成缩略图或加水印等操作。具体请参考http://developer.qiniu.com/docs/v6/api/reference/fop/image/ 
 ##              可使用基本图片处理、高级图片处理、图片水印处理这3个接口。例如 ?imageView2/2/w/500 即生成宽度最多500px的缩略图
-qiniu:
-  offline: false
-  sync: true
-  bucket: gamepic
-  secret_file: sec/qn.json
-  access_key: 
-  secret_key: 
-  dirPrefix: static
-  urlPrefix: http://p6rnp4hwz.bkt.clouddn.com/static
-  up_host: https://upload-z2.qiniu.com
-  local_dir: static
-  update_exist: true
-  image: 
-    folder: images
-    extend: widthwebp
-  js:
-    folder: js
-  css:
-    folder: css
+# qiniu:
+#   offline: false
+#   sync: true
+#   bucket: gamepic
+#   secret_file: sec/qn.json
+#   access_key: 
+#   secret_key: 
+#   dirPrefix: static
+#   urlPrefix: http://p6rnp4hwz.bkt.clouddn.com/static
+#   up_host: https://upload-z2.qiniu.com
+#   local_dir: static
+#   update_exist: true
+#   image: 
+#     folder: images
+#     extend: widthwebp
+#   js:
+#     folder: js
+#   css:
+#     folder: css
+
+deploy:
+  type: cos
+  bucket: page-1305873037
+  region: ap-shanghai

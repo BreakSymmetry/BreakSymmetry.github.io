@@ -1,5 +1,5 @@
 ---
-title: 艾比之星1.9下载
+title: 艾比之星1.9
 date: 2018-08-07 11:22:01
 categories: Releases
 tags: Game
@@ -21,7 +21,6 @@ tags: Game
 
 感谢大家在这里下载体验，欢迎加入官方QQ群参与讨论：799701527
 
-{% qnimg AbbyStar/51219.png title:图片标题 alt:图片说明 'class:class1 class2' extend:?imageView2/2/w/300 %}
-<!-- {% qnimg SpinSmash/512.png title:图片标题 alt:图片说明 'class:class1 class2' extend:?-widthwebp %} -->
+![艾比之星](/images/AbbyStar/51219.png)
 
 <!-- 欢迎加入官方QQ群与我们讨论：799701527 -->

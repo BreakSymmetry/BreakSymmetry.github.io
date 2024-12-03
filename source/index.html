@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abby Games</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #f5f5f5;
+        }
+        header {
+            text-align: center;
+            padding: 2rem 0;
+        }
+        h1 {
+            color: #333;
+        }
+        .game-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+        .game-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+        .game-card h2 {
+            margin-top: 0;
+            color: #007bff;
+        }
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            color: #666;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Abby Games</h1>
+        <p>Explore our collection of fun and engaging games!</p>
+    </header>
+
+    <main>
+        <div class="game-list">
+            <div class="game-card">
+                <h2>Abby Star 2.0</h2>
+                <p>Experience the latest version of our popular Abby Star game!</p>
+                <a href="/Abby-Star-2-0">Learn More</a>
+            </div>
+            <div class="game-card">
+                <h2>Spin Smash</h2>
+                <p>Test your skills in this exciting spinning adventure!</p>
+                <a href="/SpinSmash">Learn More</a>
+            </div>
+            <div class="game-card">
+                <h2>Chinese Abby</h2>
+                <p>Explore the Chinese version of our games!</p>
+                <a href="/ChineseAbby">Learn More</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p><a href="/privacy">Privacy Policy</a></p>
+        <p>&copy; 2024 Abby Games. All rights reserved.</p>
+    </footer>
+</body>
+</html> 

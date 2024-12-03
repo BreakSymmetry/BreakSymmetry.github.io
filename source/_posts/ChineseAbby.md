@@ -1,5 +1,5 @@
 ---
-title: 艾比之星1.7下载
+title: 艾比之星1.7
 date: 2018-04-10 14:22:01
 categories: Releases
 tags: Game
