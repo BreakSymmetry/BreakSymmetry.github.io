@@ -1,0 +1,31 @@
+{
+    "applinks": {
+        "details": [
+            {
+                "appID": "89NP2799WQ.net.BreakSymmetry.AbbyStar",
+                "paths": [
+                    "NOT /",
+                    "NOT /2018",
+                    "NOT /2024",
+                    "NOT /archives",
+                    "NOT /categories",
+                    "NOT /tags",
+                    "NOT /about",
+                    "NOT /contact",
+                    "NOT /search",
+                    "NOT /sitemap",
+                    "NOT /404",
+                    "NOT /feed",
+                    "NOT /rss",
+                    "NOT /privacy",
+                    "NOT /terms",
+                    "NOT /assets/*",
+                    "NOT /css/*",
+                    "NOT /js/*",
+                    "NOT /images/*",
+                    "/gameinfo"
+                ]
+            }
+        ]
+    }
+}

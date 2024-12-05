@@ -77,7 +77,8 @@ theme_style: light
 
 # hexo-excerpt
 excerpt_depth: 2
-
+include:
+  - .well-known/**
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 # deploy:
