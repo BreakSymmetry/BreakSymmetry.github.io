@@ -4,18 +4,18 @@ import Image from 'next/image';
 export const metadata: Metadata = {
   title: '艾比之星 · Abby Star',
   description: '末世像素风动作 Roguelike《艾比之星》的官方下载与支持入口。',
-  alternates: { canonical: 'https://breaksymmetry.cn/gameinfo' },
+  alternates: { canonical: 'https://breaksymmetry.net/gameinfo' },
   openGraph: {
     type: 'website',
     title: '艾比之星 · Abby Star',
     description: '一位少女，一颗异星，和一场仍在继续的冒险。',
-    url: 'https://breaksymmetry.cn/gameinfo',
-    images: [{ url: 'https://breaksymmetry.cn/abby-title.png', alt: '《艾比之星》像素游戏画面' }],
+    url: 'https://breaksymmetry.net/gameinfo',
+    images: [{ url: 'https://breaksymmetry.net/abby-title.png', alt: '《艾比之星》像素游戏画面' }],
   },
   twitter: {
     title: '艾比之星 · Abby Star',
     description: '一位少女，一颗异星，和一场仍在继续的冒险。',
-    images: ['https://breaksymmetry.cn/abby-title.png'],
+    images: ['https://breaksymmetry.net/abby-title.png'],
   },
 };
 

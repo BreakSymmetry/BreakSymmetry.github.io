@@ -19,10 +19,10 @@ export async function generateMetadata({ params }: JournalPageProps): Promise<Me
   return {
     title: post.title.zh,
     description: post.summary.zh,
-    alternates: { canonical: `https://breaksymmetry.cn/journal/${post.slug}` },
+    alternates: { canonical: `https://breaksymmetry.net/journal/${post.slug}` },
     openGraph: {
       type: 'article',
-      url: `https://breaksymmetry.cn/journal/${post.slug}`,
+      url: `https://breaksymmetry.net/journal/${post.slug}`,
       title: post.title.zh,
       description: post.summary.zh,
       images: [],

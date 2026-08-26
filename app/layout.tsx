@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://breaksymmetry.cn'),
+  metadataBase: new URL('https://breaksymmetry.net'),
   title: {
     default: '成都打破对称科技 | 游戏开发 × Medicine AI',
     template: '%s | 打破对称科技',
@@ -21,9 +21,9 @@ export const metadata: Metadata = {
   description: '成都打破对称科技是一家专注游戏开发与 Medicine AI 探索的科技公司，从像素世界到蛋白质系统，为未知创造新的可能。',
   keywords: ['成都打破对称科技', 'Break Symmetry', '游戏开发', 'Medicine AI', 'Protein Intelligence', '艾比之星', 'Abby Star'],
   alternates: {
-    canonical: 'https://breaksymmetry.cn',
+    canonical: 'https://breaksymmetry.net',
     languages: {
-      'zh-CN': 'https://breaksymmetry.cn',
+      'zh-CN': 'https://breaksymmetry.net',
       en: 'https://breaksymmetry.net',
     },
   },
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'zh_CN',
     alternateLocale: 'en_US',
-    url: 'https://breaksymmetry.cn',
+    url: 'https://breaksymmetry.net',
     siteName: '打破对称科技 · Break Symmetry',
     title: '打破既定边界 | 游戏开发 × Medicine AI',
     description: '从像素世界到蛋白质系统，在成都为未知创造新的可能。',
