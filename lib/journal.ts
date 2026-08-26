@@ -1,9 +1,10 @@
 export type JournalPost = {
   slug: string;
   date: string;
-  category: 'GAME DESIGN' | 'GAME AI' | 'MEDICINE AI';
+  category: 'GAME DESIGN' | 'GAME DEV' | 'GAME AI' | 'MEDICINE AI';
   readTime: string;
   accent: 'acid' | 'blue' | 'coral';
+  kind?: 'working-note' | 'archive';
   title: { zh: string; en: string };
   summary: { zh: string; en: string };
   englishAbstract: string;
@@ -259,7 +260,106 @@ export const journalPosts: JournalPost[] = [
       },
     ],
   },
+  {
+    slug: 'abbystar-five-years-later',
+    date: '2024.12.23',
+    category: 'GAME DEV',
+    readTime: '6 MIN',
+    accent: 'blue',
+    kind: 'archive',
+    title: {
+      zh: '《艾比之星》：五年之后，重新开机',
+      en: 'Abby Star: switching the project back on after five years',
+    },
+    summary: {
+      zh: '从自动瞄准、随机地图到敌人寻路，一组版本日志记录了独立游戏如何在暂停之后找回自己的方向。',
+      en: 'From auto-aim and procedural rooms to enemy pathfinding, a small release archive shows how an independent game found its direction again after a long pause.',
+    },
+    englishAbstract: 'A development retrospective reconstructed from Abby Star release notes between 2018 and 2024. The interesting story is not a list of features, but how scope, player feedback and technical foundations changed while the identity of the game survived a five-year pause.',
+    sections: [
+      {
+        heading: '2018：用版本回答最真实的问题',
+        paragraphs: [
+          '《艾比之星》早期的迭代非常具体：增加伙伴机器人、武器和 Boss，让跳跃能够穿过敌人，修复场景与存档问题。到了 1.8，自动瞄准、随机地图、可破坏物件和双武器槽进入游戏；1.9 又补上新手引导、登录奖励和整体难度调整。',
+          '把这些项目放在一起看，会发现版本日志不是功能清单，而是一串产品判断：怎样让移动端动作游戏更顺手，怎样让每一局更有变化，怎样降低第一次进入世界的门槛。',
+        ],
+      },
+      {
+        heading: '暂停不是把一切清零',
+        paragraphs: [
+          '独立项目经常经历长时间停顿。团队、技术环境、平台规则和玩家期待都会变化，但作品已经形成的气质不应该随之消失。真正困难的不是“继续加内容”，而是判断哪些部分值得继承，哪些系统必须重做。',
+          '《艾比之星》的像素世界、动作节奏和那位孤身进入异星的少女，是应该保留的核心；围绕它们的技术债、引导、数值和成长系统则可以重新设计。',
+        ],
+      },
+      {
+        heading: '2024：先恢复地基，再扩展世界',
+        paragraphs: [
+          '五年后重新开机时，更新首先落在敌人寻路、部分敌人 AI、新场景、武器、能力与升级体系上。这些工作看起来不如一张新海报显眼，却决定了后续内容能否稳定生长。',
+          '对长期维护的游戏来说，恢复生产能力本身就是一次版本目标：构建还能否重复、战斗是否仍可调试、内容是否能继续扩展、玩家旧记忆能否和新体验连接起来。',
+        ],
+      },
+      {
+        heading: '长期项目需要一条可回来的路',
+        paragraphs: [
+          '这段历史留下的经验是：每次发布都应保留清楚的产品理由和技术上下文。它们会在几年后成为重新理解项目的入口，而不只是当时的公告。',
+          '游戏可以暂停，团队也会变化，但只要作品的核心表达仍然清楚、生产链可以重建，长期项目就有重新生长的机会。',
+        ],
+      },
+    ],
+    references: [
+      { label: '进入《艾比之星》游戏与下载入口', url: '/gameinfo' },
+    ],
+  },
+  {
+    slug: 'pixel-icons-as-a-system',
+    date: '2025.02.26',
+    category: 'GAME DEV',
+    readTime: '5 MIN',
+    accent: 'coral',
+    kind: 'archive',
+    title: {
+      zh: '先定义数量感，再生成像素图标',
+      en: 'Define the visual quantity system before generating pixel icons',
+    },
+    summary: {
+      zh: '一组 IAP 图标最难的不是生成七张漂亮图片，而是让玩家一眼读懂“更多”、材质与价值层级。',
+      en: 'The hard part of an IAP icon set is not generating seven attractive images. It is making quantity, material and value instantly legible as one system.',
+    },
+    englishAbstract: 'A production note distilled from an early generative-art experiment for pixel-game purchase icons. Consistency comes from defining the semantic ladder, silhouette, palette, material and review criteria before writing prompts.',
+    sections: [
+      {
+        heading: '图标首先是一套语义',
+        paragraphs: [
+          '当商店里出现“少量钻石、一堆钻石、一箱钻石”时，玩家需要在缩略图尺寸下立即读懂数量和价值。单张图是否精致是第二层问题，第一层问题是整组图标有没有稳定的比较关系。',
+          '因此设计应该先建立数量阶梯：散落的几颗、小堆、明显的堆叠、打开的容器，再到更坚固、更高价值的箱体。每一级都必须通过轮廓就能区别，而不能只依赖更多闪光。',
+        ],
+      },
+      {
+        heading: '把风格写成约束，而不是形容词',
+        paragraphs: [
+          '“像素风、科幻、末世”仍然太宽。真正能保持一致的约束包括固定的青—绿—蓝色域、统一像素密度、相近的观察角度、清晰的边缘、受控的高光面积，以及在小尺寸下仍然成立的负空间。',
+          '木箱与金属箱的差异也应通过结构和材质表达：木板、磨损与开口方式是一组语言；铆钉、锁扣和工业轮廓是另一组语言。',
+        ],
+      },
+      {
+        heading: '提示词是生产合同',
+        paragraphs: [
+          '生成式工具擅长提出候选，不擅长自行维护整个 UI 系统。有效的提示词应明确主体数量、构图、材质、调色板、背景、图标用途和禁止项，并让每一档只改变少数变量。',
+          '这样生成结果才可以被比较：如果“更多”没有在轮廓上更明显，或某个箱体突然换了镜头和光照，就能快速判定失败，而不是靠主观感受继续抽卡。',
+        ],
+      },
+      {
+        heading: 'AI 之后仍然需要美术判断',
+        paragraphs: [
+          '最终资产仍需要人工统一像素边缘、透明区、对比度、锚点和实际 UI 尺寸下的辨识度。批量生成省下的是候选探索时间，不是艺术指导。',
+          '更稳妥的流程是先做一张基准图标，验证风格和信息层级，再扩展整套资产；最后回到真实商店界面中测试，而不是只在大图预览里选择最漂亮的一张。',
+        ],
+      },
+    ],
+  },
 ];
+
+export const journalPostsByDate = [...journalPosts].sort((left, right) => right.date.localeCompare(left.date));
 
 export function getJournalPost(slug: string) {
   return journalPosts.find((post) => post.slug === slug);

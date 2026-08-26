@@ -13,8 +13,10 @@ const journalSlugs = [
   'agent-runtime-for-game-ai',
   'surprisal-as-damage',
   'space-as-a-game-operator',
+  'abbystar-five-years-later',
+  'pixel-icons-as-a-system',
 ];
-const routes = ['/', '/gameinfo', ...journalSlugs.map((slug) => `/journal/${slug}`)];
+const routes = ['/', '/gameinfo', '/journal', ...journalSlugs.map((slug) => `/journal/${slug}`)];
 
 await rm(outputDir, { recursive: true, force: true });
 await mkdir(outputDir, { recursive: true });

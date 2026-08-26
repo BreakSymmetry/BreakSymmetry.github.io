@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { getJournalPost, journalPosts } from '@/lib/journal';
+import { getJournalPost, journalPosts, journalPostsByDate } from '@/lib/journal';
 
 type JournalPageProps = {
   params: Promise<{ slug: string }>;
@@ -40,8 +40,8 @@ export default async function JournalPage({ params }: JournalPageProps) {
   const post = getJournalPost(slug);
   if (!post) notFound();
 
-  const postIndex = journalPosts.findIndex((item) => item.slug === post.slug);
-  const nextPost = journalPosts[(postIndex + 1) % journalPosts.length];
+  const postIndex = journalPostsByDate.findIndex((item) => item.slug === post.slug);
+  const nextPost = journalPostsByDate[(postIndex + 1) % journalPostsByDate.length];
 
   return (
     <main className="journal-page">
@@ -67,8 +67,10 @@ export default async function JournalPage({ params }: JournalPageProps) {
 
         <div className="journal-body">
           <aside>
-            <span>WORKING NOTE</span>
-            <p>这是一篇公开研究笔记，记录问题框架、设计判断与可验证方向，不代表论文结论、产品承诺或医学建议。</p>
+            <span>{post.kind === 'archive' ? 'DEV ARCHIVE' : 'WORKING NOTE'}</span>
+            <p>{post.kind === 'archive'
+              ? '这篇文章由历史版本日志与制作记录重新整理，保留当时的经验，同时补充今天仍然有效的开发判断。'
+              : '这是一篇公开研究笔记，记录问题框架、设计判断与可验证方向，不代表论文结论、产品承诺或医学建议。'}</p>
           </aside>
           <div className="journal-copy">
             {post.sections.map((section, index) => (

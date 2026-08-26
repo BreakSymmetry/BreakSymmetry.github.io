@@ -2,13 +2,13 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { journalPosts } from '@/lib/journal';
+import { journalPostsByDate } from '@/lib/journal';
 
 type Locale = 'zh' | 'en';
 
 const copy = {
   zh: {
-    nav: ['业务', '研究日志', '理念', '联系'],
+    nav: ['业务', '文章', '理念', '联系'],
     heroLabel: '打破既定边界',
     heroTitle: <>为未知，<br /><em>创造新的可能。</em></>,
     heroIntro: '从像素世界到蛋白质系统，我们在成都把技术、设计与长期主义放在一起，探索游戏与 Medicine AI 的下一种形态。',
@@ -31,10 +31,11 @@ const copy = {
     bioBody: '我们以 Protein Intelligence 为研究方向，建立“证据 → 预测 → 区分性实验 → 数据回流”的可追溯闭环。模型帮助缩小空间，实验保留最终判决权。',
     bioStatus: 'RESEARCH IN PROGRESS / 研究进行中',
     bioAreas: [['01', '结构与构象集合'], ['02', '实验派生监督'], ['03', '可追溯研究工作流']],
-    journalLabel: '研究日志 / FIELD NOTES',
-    journalTitle: '把正在形成的想法，写成可以被检验的笔记。',
-    journalIntro: '来自 Game AI 与 Medicine AI 工作 Vault 的公开切片。我们只发布方法、问题与证据边界，不把未验证推测包装成结论。',
-    journalCta: '阅读笔记',
+    journalLabel: '文章与研究日志 / NOTES & STORIES',
+    journalTitle: '把研究、制作与长期迭代，写成可以留下来的文章。',
+    journalIntro: '这里既有 Game AI 与 Medicine AI 的公开研究切片，也有从旧博客重新整理的开发回顾。我们保留证据边界，也保存作品一路形成的过程。',
+    journalCta: '阅读文章',
+    journalArchiveCta: '查看全部文章',
     principleLabel: '我们的理念 / HOW WE THINK',
     principleTitle: '真正的新东西，往往发生在边界被重新定义的时候。',
     principles: [
@@ -54,7 +55,7 @@ const copy = {
     footerNote: '游戏开发 × Medicine AI · 成都，中国',
   },
   en: {
-    nav: ['Work', 'Journal', 'Approach', 'Contact'],
+    nav: ['Work', 'Notes', 'Approach', 'Contact'],
     heroLabel: 'BREAK THE EXPECTED',
     heroTitle: <>Creating new possibilities<br /><em>for the unknown.</em></>,
     heroIntro: 'From pixel worlds to protein systems, our Chengdu team brings technology, design and long-term thinking together to explore what comes next in games and Medicine AI.',
@@ -77,10 +78,11 @@ const copy = {
     bioBody: 'We are building a traceable evidence → prediction → discriminating experiment → feedback loop. Models narrow the search space; experiments retain the final say.',
     bioStatus: 'RESEARCH IN PROGRESS',
     bioAreas: [['01', 'Structures & ensembles'], ['02', 'Experimental supervision'], ['03', 'Traceable research workflows']],
-    journalLabel: 'FIELD NOTES / 研究日志',
-    journalTitle: 'Ideas in formation, written so they can be tested.',
-    journalIntro: 'Public slices from our Game AI and Medicine AI work vault. We publish methods, questions and evidence boundaries—not unverified conclusions.',
-    journalCta: 'Read note',
+    journalLabel: 'NOTES & STORIES / 文章与研究日志',
+    journalTitle: 'Research, making and long iteration—written to last.',
+    journalIntro: 'Public Game AI and Medicine AI working notes now sit alongside development stories reconstructed from our earlier blog. We preserve both evidence boundaries and the path a product took to become itself.',
+    journalCta: 'Read article',
+    journalArchiveCta: 'View all articles',
     principleLabel: 'HOW WE THINK / 我们的理念',
     principleTitle: 'The genuinely new often appears when a boundary is redefined.',
     principles: [
@@ -212,7 +214,7 @@ export default function Home() {
           <p>{t.journalIntro}</p>
         </div>
         <div className="journal-grid">
-          {journalPosts.map((post, index) => (
+          {journalPostsByDate.map((post, index) => (
             <a className={`journal-card journal-card-${post.accent}`} href={`/journal/${post.slug}`} key={post.slug}>
               <div className="journal-card-visual" aria-hidden="true">
                 <span>0{index + 1}</span><i /><i /><i />
@@ -224,6 +226,7 @@ export default function Home() {
             </a>
           ))}
         </div>
+        <a className="journal-all" href="/journal">{t.journalArchiveCta} <span>↗</span></a>
       </section>
 
       <section className="principles" id="about">
