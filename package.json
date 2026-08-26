@@ -9,8 +9,10 @@
     "dev": "vinext dev",
     "build": "vinext build",
     "build:static": "npm run build && node scripts/export-static.mjs",
+    "build:static:net": "NEXT_PUBLIC_SITE_VARIANT=net npm run build:static",
+    "build:static:cn": "NEXT_PUBLIC_SITE_VARIANT=cn npm run build:static",
     "start": "vinext start",
-    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next"
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern static-export --ignore-pattern static-export-cn"
   },
   "dependencies": {
     "next": "16.2.6",

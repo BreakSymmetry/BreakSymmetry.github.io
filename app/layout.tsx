@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { isChinaSite, siteOrigin } from '@/lib/site-variant';
 import './globals.css';
 
 const geistSans = Geist({
@@ -13,34 +14,51 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://breaksymmetry.net'),
+  metadataBase: new URL(siteOrigin),
   title: {
-    default: '成都打破对称科技 | 游戏开发 × Medicine AI',
-    template: '%s | 打破对称科技',
+    default: isChinaSite
+      ? '成都打破对称科技 | 游戏开发 × Medicine AI'
+      : 'Break Symmetry | Game Development × Medicine AI',
+    template: isChinaSite ? '%s | 打破对称科技' : '%s | Break Symmetry',
   },
-  description: '成都打破对称科技是一家专注游戏开发与 Medicine AI 探索的科技公司，从像素世界到蛋白质系统，为未知创造新的可能。',
-  keywords: ['成都打破对称科技', 'Break Symmetry', '游戏开发', 'Medicine AI', 'Protein Intelligence', '艾比之星', 'Abby Star'],
+  description: isChinaSite
+    ? '成都打破对称科技是一家专注游戏开发与 Medicine AI 探索的科技公司，从像素世界到蛋白质系统，为未知创造新的可能。'
+    : 'Break Symmetry is a Chengdu-based technology company exploring game development and Medicine AI, from pixel worlds to protein systems.',
+  keywords: isChinaSite
+    ? ['成都打破对称科技', 'Break Symmetry', '游戏开发', 'Medicine AI', 'Protein Intelligence', '艾比之星', 'Abby Star']
+    : ['Break Symmetry', 'game development', 'Medicine AI', 'Protein Intelligence', 'Abby Star'],
   alternates: {
-    canonical: 'https://breaksymmetry.net',
-    languages: {
-      'zh-CN': 'https://breaksymmetry.net',
-      en: 'https://breaksymmetry.net',
-    },
+    canonical: siteOrigin,
+    languages: isChinaSite ? { 'zh-CN': siteOrigin } : { en: siteOrigin },
   },
   openGraph: {
     type: 'website',
-    locale: 'zh_CN',
-    alternateLocale: 'en_US',
-    url: 'https://breaksymmetry.net',
-    siteName: '打破对称科技 · Break Symmetry',
-    title: '打破既定边界 | 游戏开发 × Medicine AI',
-    description: '从像素世界到蛋白质系统，在成都为未知创造新的可能。',
-    images: [{ url: '/og.png', width: 1731, height: 909, alt: '打破既定边界 · 游戏开发 × Medicine AI' }],
+    locale: isChinaSite ? 'zh_CN' : 'en_US',
+    url: siteOrigin,
+    siteName: isChinaSite ? '打破对称科技 · Break Symmetry' : 'Break Symmetry',
+    title: isChinaSite
+      ? '打破既定边界 | 游戏开发 × Medicine AI'
+      : 'Break the Expected | Game Development × Medicine AI',
+    description: isChinaSite
+      ? '从像素世界到蛋白质系统，在成都为未知创造新的可能。'
+      : 'From pixel worlds to protein systems, creating new possibilities for the unknown.',
+    images: [{
+      url: '/og.png',
+      width: 1731,
+      height: 909,
+      alt: isChinaSite
+        ? '打破既定边界 · 游戏开发 × Medicine AI'
+        : 'Break the Expected · Game Development × Medicine AI',
+    }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '打破既定边界 | 游戏开发 × Medicine AI',
-    description: '从像素世界到蛋白质系统，在成都为未知创造新的可能。',
+    title: isChinaSite
+      ? '打破既定边界 | 游戏开发 × Medicine AI'
+      : 'Break the Expected | Game Development × Medicine AI',
+    description: isChinaSite
+      ? '从像素世界到蛋白质系统，在成都为未知创造新的可能。'
+      : 'From pixel worlds to protein systems, creating new possibilities for the unknown.',
     images: ['/og.png'],
   },
 };
@@ -51,7 +69,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN">
+    <html lang={isChinaSite ? 'zh-CN' : 'en'}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

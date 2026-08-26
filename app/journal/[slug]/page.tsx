@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getJournalPost, journalPosts, journalPostsByDate } from '@/lib/journal';
+import { isChinaSite, siteOrigin } from '@/lib/site-variant';
 
 type JournalPageProps = {
   params: Promise<{ slug: string }>;
@@ -16,20 +18,22 @@ export async function generateMetadata({ params }: JournalPageProps): Promise<Me
   const post = getJournalPost(slug);
   if (!post) return {};
 
+  const locale = isChinaSite ? 'zh' : 'en';
+
   return {
-    title: post.title.zh,
-    description: post.summary.zh,
-    alternates: { canonical: `https://breaksymmetry.net/journal/${post.slug}` },
+    title: post.title[locale],
+    description: post.summary[locale],
+    alternates: { canonical: `${siteOrigin}/journal/${post.slug}` },
     openGraph: {
       type: 'article',
-      url: `https://breaksymmetry.net/journal/${post.slug}`,
-      title: post.title.zh,
-      description: post.summary.zh,
+      url: `${siteOrigin}/journal/${post.slug}`,
+      title: post.title[locale],
+      description: post.summary[locale],
       images: [],
     },
     twitter: {
-      title: post.title.zh,
-      description: post.summary.zh,
+      title: post.title[locale],
+      description: post.summary[locale],
       images: [],
     },
   };
@@ -46,11 +50,11 @@ export default async function JournalPage({ params }: JournalPageProps) {
   return (
     <main className="journal-page">
       <header className="journal-header">
-        <a className="brand" href="/" aria-label="返回打破对称科技首页">
+        <Link className="brand" href="/" aria-label={isChinaSite ? '返回打破对称科技首页' : 'Back to Break Symmetry home'}>
           <Image src="/brand-mark.jpeg" alt="" width={44} height={44} className="brand-mark" priority />
           <span className="brand-name"><strong>打破对称</strong><small>BREAK SYMMETRY</small></span>
-        </a>
-        <a className="journal-back" href="/#journal">← 返回研究日志</a>
+        </Link>
+        <Link className="journal-back" href="/#journal">← {isChinaSite ? '返回研究日志' : 'Back to notes'}</Link>
       </header>
 
       <article className={`journal-article journal-accent-${post.accent}`}>
@@ -101,7 +105,7 @@ export default async function JournalPage({ params }: JournalPageProps) {
       </a>
 
       <footer className="journal-footer">
-        <span>成都打破对称科技有限公司</span>
+        <span>{isChinaSite ? '成都打破对称科技有限公司' : 'BREAK SYMMETRY TECHNOLOGY'}</span>
         <a href="mailto:info@breaksymmetry.net">info@breaksymmetry.net</a>
         <span>© {new Date().getFullYear()} BREAK SYMMETRY</span>
       </footer>

@@ -3,9 +3,11 @@ import path from 'node:path';
 import { spawn } from 'node:child_process';
 
 const projectDir = process.cwd();
-const outputDir = path.join(projectDir, 'static-export');
+const outputDir = path.join(projectDir, process.env.STATIC_EXPORT_DIR ?? 'static-export');
 const port = process.env.STATIC_EXPORT_PORT ?? '4173';
 const origin = `http://127.0.0.1:${port}`;
+const siteVariant = process.env.NEXT_PUBLIC_SITE_VARIANT === 'cn' ? 'cn' : 'net';
+const customDomain = siteVariant === 'cn' ? 'breaksymmetry.cn' : 'breaksymmetry.net';
 const journalSlugs = [
   'state-before-score',
   'structures-are-ensembles',
@@ -74,7 +76,7 @@ try {
   const home = await fetchText('/');
   await writeFile(path.join(outputDir, '404.html'), home);
   await writeFile(path.join(outputDir, '.nojekyll'), '');
-  await writeFile(path.join(outputDir, 'CNAME'), 'breaksymmetry.net\n');
+  await writeFile(path.join(outputDir, 'CNAME'), `${customDomain}\n`);
 } finally {
   server.kill('SIGTERM');
   await Promise.race([
