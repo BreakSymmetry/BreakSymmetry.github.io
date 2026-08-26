@@ -15,11 +15,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://breaksymmetry.cn'),
   title: {
-    default: '打破对称科技 | 游戏开发 × Bio AI',
+    default: '成都打破对称科技 | 游戏开发 × Medicine AI',
     template: '%s | 打破对称科技',
   },
-  description: '打破对称科技是一家专注游戏开发与 Bio AI 探索的科技公司，从像素世界到生命科学，为未知创造新的可能。',
-  keywords: ['打破对称', 'Break Symmetry', '游戏开发', 'Bio AI', '艾比之星', 'Abby Star'],
+  description: '成都打破对称科技是一家专注游戏开发与 Medicine AI 探索的科技公司，从像素世界到蛋白质系统，为未知创造新的可能。',
+  keywords: ['成都打破对称科技', 'Break Symmetry', '游戏开发', 'Medicine AI', 'Protein Intelligence', '艾比之星', 'Abby Star'],
   alternates: {
     canonical: 'https://breaksymmetry.cn',
     languages: {
@@ -33,14 +33,14 @@ export const metadata: Metadata = {
     alternateLocale: 'en_US',
     url: 'https://breaksymmetry.cn',
     siteName: '打破对称科技 · Break Symmetry',
-    title: '打破既定边界 | 游戏开发 × Bio AI',
-    description: '从像素世界到生命科学，为未知创造新的可能。',
-    images: [{ url: '/og.png', width: 1744, height: 911, alt: '打破既定边界 · 游戏开发 × Bio AI' }],
+    title: '打破既定边界 | 游戏开发 × Medicine AI',
+    description: '从像素世界到蛋白质系统，在成都为未知创造新的可能。',
+    images: [{ url: '/og.png', width: 1731, height: 909, alt: '打破既定边界 · 游戏开发 × Medicine AI' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '打破既定边界 | 游戏开发 × Bio AI',
-    description: '从像素世界到生命科学，为未知创造新的可能。',
+    title: '打破既定边界 | 游戏开发 × Medicine AI',
+    description: '从像素世界到蛋白质系统，在成都为未知创造新的可能。',
     images: ['/og.png'],
   },
 };

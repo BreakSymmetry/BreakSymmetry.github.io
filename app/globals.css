@@ -12,7 +12,7 @@ a { color: inherit; text-decoration: none; }
 .brand-name { display: grid; gap: 1px; line-height: 1; }
 .brand-name strong { font-size: 16px; letter-spacing: 0.1em; }
 .brand-name small { font-size: 8px; letter-spacing: 0.22em; opacity: 0.62; }
-.site-header nav { display: flex; gap: 38px; font-size: 13px; letter-spacing: 0.08em; }
+.site-header nav { display: flex; gap: 30px; font-size: 13px; letter-spacing: 0.08em; }
 .site-header nav a { opacity: 0.7; transition: opacity 160ms ease; }
 .site-header nav a:hover { opacity: 1; }
 .language-switch { justify-self: end; border: 1px solid var(--line); border-radius: 999px; padding: 10px 14px; background: transparent; color: var(--paper); font: inherit; font-size: 11px; letter-spacing: 0.12em; cursor: pointer; }
@@ -88,7 +88,7 @@ a { color: inherit; text-decoration: none; }
 .section-index { display: flex; flex-direction: column; align-items: center; gap: 14px; font: 11px monospace; opacity: .45; }
 .section-index i { width: 1px; height: 120px; background: var(--ink); }
 .section-label { margin: 0 0 30px; font: 700 10px monospace; letter-spacing: .17em; text-transform: uppercase; opacity: .5; }
-.work-intro h2, .game-content h2, .bio-copy h2, .principle-lead h2, .about-copy h2, .contact-section h2 { margin: 0; font-size: clamp(42px, 5.2vw, 84px); line-height: 1.02; letter-spacing: -.055em; }
+.work-intro h2, .game-content h2, .bio-copy h2, .journal-section h2, .principle-lead h2, .about-copy h2, .contact-section h2 { margin: 0; font-size: clamp(42px, 5.2vw, 84px); line-height: 1.02; letter-spacing: -.055em; }
 .work-intro h2 em { color: var(--blue); font-style: normal; }
 .intro-body { align-self: end; max-width: 540px; margin: 0 0 4px; color: rgba(6,24,44,.63); font-size: 16px; line-height: 1.9; }
 
@@ -141,6 +141,31 @@ a { color: inherit; text-decoration: none; }
 .bio-areas strong { font-size: 13px; letter-spacing: .04em; }
 .bio-areas i { color: var(--acid); font-style: normal; }
 
+.journal-section { padding: 140px 5vw 150px; background: #03111f; color: var(--paper); }
+.journal-section-heading { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(280px, .65fr); gap: 7vw; align-items: end; margin-bottom: 72px; }
+.journal-section-heading h2 { max-width: 940px; font-size: clamp(44px, 5.3vw, 82px); }
+.journal-section-heading > p { max-width: 540px; margin: 0 0 5px; color: rgba(242,241,233,.58); font-size: 15px; line-height: 1.85; }
+.journal-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid rgba(255,255,255,.16); border-left: 1px solid rgba(255,255,255,.16); }
+.journal-card { display: flex; min-width: 0; flex-direction: column; min-height: 520px; padding: 18px; border-right: 1px solid rgba(255,255,255,.16); border-bottom: 1px solid rgba(255,255,255,.16); transition: background 180ms ease, transform 180ms ease; }
+.journal-card:hover { z-index: 2; transform: translateY(-5px); background: rgba(255,255,255,.035); }
+.journal-card-visual { position: relative; height: 175px; margin-bottom: 25px; overflow: hidden; background: #0c2035; isolation: isolate; }
+.journal-card-visual::before, .journal-card-visual::after { content: ""; position: absolute; border: 1px solid rgba(255,255,255,.4); border-radius: 50%; }
+.journal-card-visual::before { width: 210px; height: 210px; right: -55px; top: -80px; }
+.journal-card-visual::after { width: 110px; height: 110px; right: -5px; top: -28px; }
+.journal-card-visual > span { position: absolute; left: 16px; bottom: 13px; font: 800 46px monospace; letter-spacing: -.1em; }
+.journal-card-visual > i { position: absolute; width: 8px; height: 8px; border-radius: 50%; background: white; box-shadow: 0 0 14px currentColor; }
+.journal-card-visual > i:nth-of-type(1) { left: 38%; top: 24%; }
+.journal-card-visual > i:nth-of-type(2) { right: 17%; bottom: 24%; }
+.journal-card-visual > i:nth-of-type(3) { left: 58%; bottom: 18%; }
+.journal-card-acid .journal-card-visual { background: var(--acid); color: var(--ink); }
+.journal-card-blue .journal-card-visual { background: var(--blue); }
+.journal-card-coral .journal-card-visual { background: #ff6f61; color: var(--ink); }
+.journal-card-meta { display: flex; justify-content: space-between; gap: 15px; color: rgba(242,241,233,.45); font: 9px monospace; letter-spacing: .1em; }
+.journal-card h3 { margin: 28px 0 0; font-size: clamp(24px, 2.2vw, 34px); line-height: 1.16; letter-spacing: -.035em; }
+.journal-card > p { margin: 18px 0 0; color: rgba(242,241,233,.55); font-size: 13px; line-height: 1.75; }
+.journal-card-link { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 28px; color: var(--acid); font: 700 10px monospace; letter-spacing: .08em; }
+.journal-card-link i { font-size: 18px; font-style: normal; }
+
 .principles { display: grid; grid-template-columns: .9fr 1.1fr; gap: 8vw; padding: 150px 5vw; background: var(--paper); color: var(--ink); }
 .principle-lead { align-self: start; position: sticky; top: 60px; }
 .principle-lead h2 { max-width: 680px; font-size: clamp(42px, 4.6vw, 72px); }
@@ -168,13 +193,80 @@ a { color: inherit; text-decoration: none; }
 .button-dark { background: var(--ink); color: white; }
 .text-link { padding: 12px 0; border-bottom: 1px solid rgba(6,24,44,.5); font-size: 13px; font-weight: 700; }
 
-footer { display: grid; grid-template-columns: 1.2fr 1fr auto; align-items: center; gap: 30px; padding: 60px 5vw 30px; background: #03111f; color: var(--paper); }
+.site-footer { display: grid; grid-template-columns: 1.2fr 1fr auto; align-items: center; gap: 30px; padding: 60px 5vw 30px; background: #03111f; color: var(--paper); }
 .footer-brand { justify-self: start; }
-footer > p { margin: 0; color: rgba(242,241,233,.42); font: 10px monospace; letter-spacing: .08em; }
-footer > div { display: flex; align-items: center; gap: 20px; }
-footer > div a, footer > div button { color: rgba(242,241,233,.72); font: 700 9px monospace; letter-spacing: .12em; }
-footer > div button { border: 0; padding: 0; background: transparent; cursor: pointer; }
-footer > small { grid-column: 1 / -1; margin-top: 40px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.1); color: rgba(242,241,233,.28); font: 8px monospace; letter-spacing: .13em; }
+.site-footer > p { margin: 0; color: rgba(242,241,233,.42); font: 10px monospace; letter-spacing: .08em; }
+.footer-domains { display: flex; align-items: center; gap: 20px; }
+.footer-domains a, .footer-domains button { color: rgba(242,241,233,.72); font: 700 9px monospace; letter-spacing: .12em; }
+.footer-domains button { border: 0; padding: 0; background: transparent; cursor: pointer; }
+.footer-legal, .footer-filing { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 12px 24px; color: rgba(242,241,233,.42); font-size: 10px; }
+.footer-legal { margin-top: 34px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.1); }
+.footer-legal a:hover, .footer-filing a:hover { color: var(--paper); }
+.footer-filing { margin-top: -12px; color: rgba(242,241,233,.28); font: 8px monospace; letter-spacing: .08em; }
+.footer-filing span { margin-left: auto; }
+
+/* Journal detail */
+.journal-page { min-height: 100vh; background: var(--paper); color: var(--ink); }
+.journal-header { display: flex; align-items: center; justify-content: space-between; height: 86px; padding: 0 5vw; background: var(--ink); color: var(--paper); border-bottom: 1px solid rgba(255,255,255,.14); }
+.journal-back { color: rgba(242,241,233,.68); font: 700 10px monospace; letter-spacing: .08em; }
+.journal-back:hover { color: var(--acid); }
+.journal-article { --journal-accent: var(--blue); position: relative; overflow: hidden; }
+.journal-accent-acid { --journal-accent: var(--acid); }
+.journal-accent-blue { --journal-accent: var(--blue); }
+.journal-accent-coral { --journal-accent: #ff6f61; }
+.journal-hero-pattern { position: absolute; top: 0; right: 0; width: 42vw; height: 600px; overflow: hidden; pointer-events: none; opacity: .72; }
+.journal-hero-pattern::before, .journal-hero-pattern::after { content: ""; position: absolute; border: 1px solid var(--journal-accent); border-radius: 50%; }
+.journal-hero-pattern::before { width: 600px; height: 600px; right: -240px; top: -220px; }
+.journal-hero-pattern::after { width: 360px; height: 360px; right: -55px; top: -115px; }
+.journal-hero-pattern i { position: absolute; z-index: 2; width: 10px; height: 10px; background: var(--journal-accent); box-shadow: 0 0 18px var(--journal-accent); }
+.journal-hero-pattern i:nth-child(1) { right: 13%; top: 13%; }
+.journal-hero-pattern i:nth-child(2) { right: 31%; top: 25%; }
+.journal-hero-pattern i:nth-child(3) { right: 9%; top: 43%; }
+.journal-hero-pattern i:nth-child(4) { right: 26%; top: 57%; }
+.journal-article-header { position: relative; z-index: 2; padding: 120px max(5vw, calc((100vw - 1320px) / 2)) 110px; background: var(--ink); color: var(--paper); }
+.journal-meta { display: flex; flex-wrap: wrap; gap: 16px 30px; color: var(--journal-accent); font: 700 9px monospace; letter-spacing: .13em; }
+.journal-article-header h1 { max-width: 1080px; margin: 38px 0 0; font-size: clamp(56px, 7.6vw, 126px); line-height: .94; letter-spacing: -.07em; }
+.journal-deck { max-width: 820px; margin: 38px 0 0; color: rgba(242,241,233,.65); font-size: clamp(17px, 1.5vw, 23px); line-height: 1.75; }
+.journal-abstract { display: grid; grid-template-columns: 165px minmax(0, 720px); gap: 26px; margin-top: 72px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.16); }
+.journal-abstract span { color: var(--journal-accent); font: 700 9px monospace; letter-spacing: .12em; }
+.journal-abstract p { margin: 0; color: rgba(242,241,233,.5); font-size: 13px; line-height: 1.85; }
+.journal-body { display: grid; grid-template-columns: minmax(180px, .35fr) minmax(0, 1fr); gap: 8vw; max-width: 1280px; margin: 0 auto; padding: 120px 5vw 150px; }
+.journal-body > aside { align-self: start; position: sticky; top: 40px; padding-top: 18px; border-top: 3px solid var(--journal-accent); }
+.journal-body > aside span { font: 700 9px monospace; letter-spacing: .14em; }
+.journal-body > aside p { margin: 18px 0 0; color: rgba(6,24,44,.52); font-size: 12px; line-height: 1.75; }
+.journal-copy { max-width: 780px; }
+.journal-copy section { position: relative; padding: 0 0 70px 88px; }
+.journal-copy section + section { padding-top: 68px; border-top: 1px solid rgba(6,24,44,.18); }
+.journal-section-number { position: absolute; left: 0; top: 8px; color: var(--journal-accent); font: 800 13px monospace; }
+.journal-copy section + section .journal-section-number { top: 76px; }
+.journal-copy h2 { margin: 0 0 28px; font-size: clamp(31px, 3.1vw, 50px); line-height: 1.08; letter-spacing: -.045em; }
+.journal-copy p { margin: 0 0 20px; color: rgba(6,24,44,.72); font-size: 17px; line-height: 1.95; }
+.journal-references a { display: block; width: max-content; max-width: 100%; margin-top: 14px; border-bottom: 1px solid rgba(6,24,44,.35); font: 700 12px monospace; line-height: 1.7; }
+.journal-next { display: grid; grid-template-columns: 180px minmax(0, 1fr) auto; align-items: center; gap: 30px; min-height: 230px; padding: 45px 5vw; background: var(--acid); color: var(--ink); }
+.journal-next > span { font: 700 9px monospace; letter-spacing: .13em; opacity: .58; }
+.journal-next strong { max-width: 900px; font-size: clamp(34px, 4vw, 64px); line-height: 1.04; letter-spacing: -.05em; }
+.journal-next i { font-size: 38px; font-style: normal; }
+.journal-footer { display: flex; justify-content: space-between; gap: 20px; padding: 30px 5vw; background: #03111f; color: rgba(242,241,233,.42); font: 9px monospace; letter-spacing: .06em; }
+.journal-footer a:hover { color: var(--paper); }
+
+/* Abby Star web fallback for app links */
+.gameinfo-page { position: relative; display: grid; place-items: center; min-height: 100svh; padding: 110px 5vw 60px; overflow: hidden; background: var(--ink); color: var(--paper); }
+.gameinfo-page::before { content: ""; position: absolute; inset: 0; opacity: .12; background-image: linear-gradient(rgba(255,255,255,.18) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.18) 1px, transparent 1px); background-size: 52px 52px; }
+.gameinfo-brand { position: absolute; z-index: 2; left: 5vw; top: 28px; display: flex; align-items: center; gap: 12px; font: 700 9px monospace; letter-spacing: .16em; }
+.gameinfo-brand img { border-radius: 50%; }
+.gameinfo-card { position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr .95fr; width: min(1280px, 100%); min-height: 650px; border: 1px solid rgba(255,255,255,.18); box-shadow: 0 45px 100px rgba(0,0,0,.28); }
+.gameinfo-image { position: relative; min-height: 560px; overflow: hidden; background: #07111d; }
+.gameinfo-image img { object-fit: cover; image-rendering: pixelated; }
+.gameinfo-copy { align-content: center; padding: 70px clamp(28px, 5.5vw, 88px); background: var(--paper); color: var(--ink); }
+.gameinfo-copy > p:first-child { margin: 0 0 24px; color: var(--blue); font: 700 9px monospace; letter-spacing: .14em; }
+.gameinfo-copy h1 { margin: 0; font-size: clamp(50px, 5.4vw, 82px); line-height: .84; letter-spacing: -.075em; }
+.gameinfo-copy h1 span { font-size: .38em; letter-spacing: .04em; }
+.gameinfo-intro { max-width: 500px; margin: 32px 0 0; color: rgba(6,24,44,.62); font-size: 15px; line-height: 1.85; }
+.gameinfo-links { display: grid; margin-top: 42px; border-top: 2px solid var(--ink); }
+.gameinfo-links a { padding: 16px 0; border-bottom: 1px solid rgba(6,24,44,.18); font: 700 11px monospace; }
+.gameinfo-links a:hover { color: var(--blue); }
+.gameinfo-legal { display: flex; flex-wrap: wrap; gap: 12px 22px; margin-top: 28px; color: rgba(6,24,44,.46); font-size: 10px; }
+.gameinfo-legal a:hover { color: var(--ink); }
 
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes pulse { 50% { opacity: .35; box-shadow: 0 0 4px var(--acid); } }
@@ -189,18 +281,26 @@ footer > small { grid-column: 1 / -1; margin-top: 40px; padding-top: 22px; borde
   .bio-copy { padding-top: 0; }
   .bio-system { justify-self: center; width: min(86vw, 650px); margin-top: 70px; }
   .bio-areas { left: 32px; right: 32px; bottom: 55px; }
+  .journal-section { padding: 110px 32px 120px; }
+  .journal-section-heading { grid-template-columns: 1fr; gap: 32px; }
+  .journal-grid { grid-template-columns: repeat(2, 1fr); }
   .principles { grid-template-columns: 1fr; padding: 110px 32px; }
   .principle-lead { position: static; }
   .about-section { grid-template-columns: 1fr; }
   .about-mark { min-height: 440px; }
   .about-copy { padding: 90px 8vw 110px; }
+  .journal-hero-pattern { width: 56vw; opacity: .48; }
+  .journal-body { grid-template-columns: 1fr; }
+  .journal-body > aside { position: static; max-width: 520px; }
+  .gameinfo-card { grid-template-columns: 1fr; }
+  .gameinfo-image { min-height: 480px; }
 }
 
 @media (max-width: 640px) {
   .work-intro { grid-template-columns: 1fr; gap: 28px; padding: 92px 20px; }
   .section-index { display: none; }
   .intro-body { grid-column: 1; }
-  .work-intro h2, .game-content h2, .bio-copy h2, .principle-lead h2, .about-copy h2, .contact-section h2 { font-size: 42px; }
+  .work-intro h2, .game-content h2, .bio-copy h2, .journal-section h2, .principle-lead h2, .about-copy h2, .contact-section h2 { font-size: 42px; }
   .game-art { min-height: 420px; }
   .game-content { padding: 78px 20px 90px; }
   .product-card { margin-top: 48px; }
@@ -213,6 +313,10 @@ footer > small { grid-column: 1 / -1; margin-top: 40px; padding-top: 22px; borde
   .bio-areas { left: 20px; right: 20px; bottom: 45px; grid-template-columns: 1fr; }
   .bio-areas > div { border-right: 0; border-bottom: 1px solid rgba(255,255,255,.2); }
   .bio-areas > div + div { padding-left: 0; }
+  .journal-section { padding: 88px 20px 100px; }
+  .journal-grid { grid-template-columns: 1fr; }
+  .journal-card { min-height: 500px; }
+  .journal-card-visual { height: 190px; }
   .principles { padding: 90px 20px; }
   .principle-list article { grid-template-columns: 36px 1fr; padding: 32px 0; }
   .about-mark { min-height: 330px; }
@@ -221,7 +325,29 @@ footer > small { grid-column: 1 / -1; margin-top: 40px; padding-top: 22px; borde
   .contact-actions { align-items: stretch; flex-direction: column; gap: 16px; }
   .contact-actions .button { width: 100%; }
   .text-link { align-self: flex-start; }
-  footer { grid-template-columns: 1fr; padding: 55px 20px 26px; }
-  footer > div { margin-top: 10px; }
-  footer > small { grid-column: 1; margin-top: 20px; }
+  .site-footer { grid-template-columns: 1fr; padding: 55px 20px 26px; }
+  .footer-domains { margin-top: 10px; }
+  .footer-legal, .footer-filing { grid-column: 1; flex-direction: column; align-items: flex-start; }
+  .footer-filing { margin-top: 4px; }
+  .footer-filing span { margin-left: 0; }
+  .journal-header { height: 74px; padding: 0 20px; }
+  .journal-header .brand-name { display: none; }
+  .journal-article-header { padding: 90px 20px 76px; }
+  .journal-article-header h1 { font-size: 54px; }
+  .journal-abstract { grid-template-columns: 1fr; gap: 13px; margin-top: 54px; }
+  .journal-hero-pattern { width: 80vw; }
+  .journal-body { gap: 62px; padding: 82px 20px 100px; }
+  .journal-copy section { padding: 0 0 54px 42px; }
+  .journal-copy section + section { padding-top: 54px; }
+  .journal-copy section + section .journal-section-number { top: 62px; }
+  .journal-copy h2 { font-size: 32px; }
+  .journal-copy p { font-size: 16px; }
+  .journal-next { grid-template-columns: 1fr auto; min-height: 220px; padding: 40px 20px; }
+  .journal-next > span { grid-column: 1 / -1; }
+  .journal-next strong { font-size: 34px; }
+  .journal-footer { flex-direction: column; padding: 30px 20px; }
+  .gameinfo-page { display: block; padding: 94px 20px 30px; }
+  .gameinfo-brand { left: 20px; top: 22px; }
+  .gameinfo-image { min-height: 330px; }
+  .gameinfo-copy { padding: 56px 24px 64px; }
 }

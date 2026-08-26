@@ -2,15 +2,16 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { journalPosts } from '@/lib/journal';
 
 type Locale = 'zh' | 'en';
 
 const copy = {
   zh: {
-    nav: ['业务', '理念', '联系'],
+    nav: ['业务', '研究日志', '理念', '联系'],
     heroLabel: '打破既定边界',
     heroTitle: <>为未知，<br /><em>创造新的可能。</em></>,
-    heroIntro: '从像素世界到生命科学，我们把技术、设计与长期主义放在一起，探索游戏与 Bio AI 的下一种形态。',
+    heroIntro: '从像素世界到蛋白质系统，我们在成都把技术、设计与长期主义放在一起，探索游戏与 Medicine AI 的下一种形态。',
     heroPrimary: '探索我们的工作',
     heroSecondary: '认识打破对称',
     fields: ['创造可以进入的世界', '理解生命的复杂语言'],
@@ -19,17 +20,21 @@ const copy = {
     sectionIntro: '游戏让想象成为可以体验的世界；Bio AI 让数据成为理解生命的新工具。看似遥远的两端，背后都是对复杂系统、智能与创造力的长期投入。',
     gameKicker: 'GAME STUDIO / 游戏开发',
     gameTitle: '让好游戏被长久地玩下去。',
-    gameBody: '我们开发并长期维护有鲜明表达的独立游戏，重视手感、世界观，也重视玩家反馈形成的真实循环。',
+    gameBody: '我们开发并长期维护有鲜明表达的独立游戏，也持续研究信息论、几何系统与 AI NPC 怎样产生新的可玩性。',
     gameProduct: '代表作品',
     gameName: '艾比之星',
     gameDesc: '末世像素风动作 Roguelike。一位少女，一颗异星，和一场仍在继续的冒险。',
     gameMetrics: [['11万+', '社区关注'], ['8.4', '玩家评分'], ['3', '全球平台']],
     gameCta: '进入游戏世界',
-    bioKicker: 'BIO AI / 生物智能',
-    bioTitle: '用计算，寻找生命问题的新解法。',
-    bioBody: '我们正在探索 AI 与生命科学的交汇：从生物数据理解、知识连接到可验证的研发工具，让模型真正服务于科学问题。',
-    bioStatus: 'IN EXPLORATION / 积极探索中',
-    bioAreas: [['01', '生物数据与模型'], ['02', '知识发现与连接'], ['03', '面向研发的 AI 工具']],
+    bioKicker: 'MEDICINE AI / 蛋白质智能',
+    bioTitle: '把结构、状态与实验连接起来。',
+    bioBody: '我们以 Protein Intelligence 为研究方向，建立“证据 → 预测 → 区分性实验 → 数据回流”的可追溯闭环。模型帮助缩小空间，实验保留最终判决权。',
+    bioStatus: 'RESEARCH IN PROGRESS / 研究进行中',
+    bioAreas: [['01', '结构与构象集合'], ['02', '实验派生监督'], ['03', '可追溯研究工作流']],
+    journalLabel: '研究日志 / FIELD NOTES',
+    journalTitle: '把正在形成的想法，写成可以被检验的笔记。',
+    journalIntro: '来自 Game AI 与 Medicine AI 工作 Vault 的公开切片。我们只发布方法、问题与证据边界，不把未验证推测包装成结论。',
+    journalCta: '阅读笔记',
     principleLabel: '我们的理念 / HOW WE THINK',
     principleTitle: '真正的新东西，往往发生在边界被重新定义的时候。',
     principles: [
@@ -39,19 +44,20 @@ const copy = {
     ],
     aboutLabel: 'BREAK SYMMETRY',
     aboutTitle: <>我们不想预测未来。<br /><em>我们想参与创造它。</em></>,
-    aboutBody: '打破对称科技是一家立足中国、面向全球的探索型科技公司。我们在游戏开发与 Bio AI 两条业务线上工作，把不同学科的洞察连接起来，创造有生命力的产品。',
+    aboutBody: '成都打破对称科技有限公司是一家立足成都、面向全球的探索型科技公司。我们在游戏开发与 Medicine AI 两条业务线上工作，把信息论、几何、人工智能与实验科学连接起来，创造有生命力的产品与研究工具。',
     contactLabel: '一起打破下一个边界',
-    contactTitle: '有游戏、技术或 Bio AI 方向的合作想法？',
+    contactTitle: '有游戏、技术或 Medicine AI 方向的合作想法？',
     contactBody: '欢迎与我们交流研发、产品与长期合作机会。',
-    contactCta: '在 GitHub 找到我们',
+    contactCta: '写信给我们',
+    githubCta: '访问 GitHub',
     communityCta: '访问《艾比之星》社区',
-    footerNote: '游戏开发 × Bio AI · 上海，中国',
+    footerNote: '游戏开发 × Medicine AI · 成都，中国',
   },
   en: {
-    nav: ['Work', 'Approach', 'Contact'],
+    nav: ['Work', 'Journal', 'Approach', 'Contact'],
     heroLabel: 'BREAK THE EXPECTED',
     heroTitle: <>Creating new possibilities<br /><em>for the unknown.</em></>,
-    heroIntro: 'From pixel worlds to life science, we bring technology, design and long-term thinking together to explore what comes next in games and Bio AI.',
+    heroIntro: 'From pixel worlds to protein systems, our Chengdu team brings technology, design and long-term thinking together to explore what comes next in games and Medicine AI.',
     heroPrimary: 'Explore our work',
     heroSecondary: 'Meet Break Symmetry',
     fields: ['Building worlds you can enter', 'Reading the complex language of life'],
@@ -60,17 +66,21 @@ const copy = {
     sectionIntro: 'Games turn imagination into worlds we can experience. Bio AI turns data into a new instrument for understanding life. Both demand a lasting commitment to complex systems, intelligence and creativity.',
     gameKicker: 'GAME STUDIO / 游戏开发',
     gameTitle: 'Making good games worth returning to.',
-    gameBody: 'We create and sustain independent games with a distinct point of view—built around great feel, memorable worlds and a real feedback loop with players.',
+    gameBody: 'We create and sustain independent games, while researching how information theory, geometry and AI NPCs can open new forms of play.',
     gameProduct: 'Featured title',
     gameName: 'Abby Star',
     gameDesc: 'A post-apocalyptic pixel action roguelike. One girl, one alien world, and an adventure that is still evolving.',
     gameMetrics: [['110K+', 'Community'], ['8.4', 'Player rating'], ['3', 'Global platforms']],
     gameCta: 'Enter the game world',
-    bioKicker: 'BIO AI / 生物智能',
-    bioTitle: 'New computational paths into questions of life.',
-    bioBody: 'We are exploring the intersection of AI and life science—from biological data and connected knowledge to verifiable research tools that keep scientific questions at the center.',
-    bioStatus: 'IN ACTIVE EXPLORATION',
-    bioAreas: [['01', 'Biological data & models'], ['02', 'Knowledge discovery'], ['03', 'AI tools for R&D']],
+    bioKicker: 'MEDICINE AI / PROTEIN INTELLIGENCE',
+    bioTitle: 'Connecting structures, states and experiments.',
+    bioBody: 'We are building a traceable evidence → prediction → discriminating experiment → feedback loop. Models narrow the search space; experiments retain the final say.',
+    bioStatus: 'RESEARCH IN PROGRESS',
+    bioAreas: [['01', 'Structures & ensembles'], ['02', 'Experimental supervision'], ['03', 'Traceable research workflows']],
+    journalLabel: 'FIELD NOTES / 研究日志',
+    journalTitle: 'Ideas in formation, written so they can be tested.',
+    journalIntro: 'Public slices from our Game AI and Medicine AI work vault. We publish methods, questions and evidence boundaries—not unverified conclusions.',
+    journalCta: 'Read note',
     principleLabel: 'HOW WE THINK / 我们的理念',
     principleTitle: 'The genuinely new often appears when a boundary is redefined.',
     principles: [
@@ -80,13 +90,14 @@ const copy = {
     ],
     aboutLabel: 'BREAK SYMMETRY',
     aboutTitle: <>We do not want to predict the future.<br /><em>We want to help create it.</em></>,
-    aboutBody: 'Break Symmetry is an exploration-driven technology company based in China and working globally. Across game development and Bio AI, we connect insights from different disciplines to create products with lasting life.',
+    aboutBody: 'Chengdu Break Symmetry Technology is an exploration-driven company based in Chengdu and working globally. Across game development and Medicine AI, we connect information theory, geometry, artificial intelligence and experimental science.',
     contactLabel: 'LET’S BREAK THE NEXT BOUNDARY',
-    contactTitle: 'Exploring a collaboration in games, technology or Bio AI?',
+    contactTitle: 'Exploring a collaboration in games, technology or Medicine AI?',
     contactBody: 'We welcome conversations around R&D, products and long-term partnerships.',
-    contactCta: 'Find us on GitHub',
+    contactCta: 'Email us',
+    githubCta: 'Visit GitHub',
     communityCta: 'Visit the Abby Star community',
-    footerNote: 'Game Development × Bio AI · Shanghai, China',
+    footerNote: 'Game Development × Medicine AI · Chengdu, China',
   },
 };
 
@@ -108,7 +119,7 @@ export default function Home() {
           <span className="brand-name"><strong>打破对称</strong><small>BREAK SYMMETRY</small></span>
         </a>
         <nav aria-label={locale === 'zh' ? '主导航' : 'Primary navigation'}>
-          <a href="#work">{t.nav[0]}</a><a href="#about">{t.nav[1]}</a><a href="#contact">{t.nav[2]}</a>
+          <a href="#work">{t.nav[0]}</a><a href="#journal">{t.nav[1]}</a><a href="#about">{t.nav[2]}</a><a href="#contact">{t.nav[3]}</a>
         </nav>
         <button className="language-switch" type="button" onClick={toggleLocale} aria-label={locale === 'zh' ? 'Switch to English' : '切换至中文'}>{locale === 'zh' ? 'EN' : '中文'}</button>
       </header>
@@ -135,7 +146,7 @@ export default function Home() {
             <div className="field-meta"><span>02 / BIO AI</span><strong>{t.fields[1]}</strong></div>
           </article>
         </div>
-        <p className="hero-note">SHANGHAI · CHINA <span>→</span> WORLDWIDE</p>
+        <p className="hero-note">CHENGDU · CHINA <span>→</span> WORLDWIDE</p>
       </section>
 
       <section className="work-intro" id="work">
@@ -192,6 +203,29 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="journal-section" id="journal">
+        <div className="journal-section-heading">
+          <div>
+            <p className="section-label">{t.journalLabel}</p>
+            <h2>{t.journalTitle}</h2>
+          </div>
+          <p>{t.journalIntro}</p>
+        </div>
+        <div className="journal-grid">
+          {journalPosts.map((post, index) => (
+            <a className={`journal-card journal-card-${post.accent}`} href={`/journal/${post.slug}`} key={post.slug}>
+              <div className="journal-card-visual" aria-hidden="true">
+                <span>0{index + 1}</span><i /><i /><i />
+              </div>
+              <div className="journal-card-meta"><span>{post.category}</span><span>{post.date}</span></div>
+              <h3>{post.title[locale]}</h3>
+              <p>{post.summary[locale]}</p>
+              <span className="journal-card-link">{t.journalCta} <i>↗</i></span>
+            </a>
+          ))}
+        </div>
+      </section>
+
       <section className="principles" id="about">
         <div className="principle-lead">
           <p className="section-label">{t.principleLabel}</p>
@@ -218,16 +252,27 @@ export default function Home() {
         <h2>{t.contactTitle}</h2>
         <p>{t.contactBody}</p>
         <div className="contact-actions">
-          <a className="button button-dark" href="https://github.com/BreakSymmetry" target="_blank" rel="noreferrer">{t.contactCta} <span>↗</span></a>
+          <a className="button button-dark" href="mailto:info@breaksymmetry.net">{t.contactCta} <span>↗</span></a>
+          <a className="text-link" href="https://github.com/BreakSymmetry" target="_blank" rel="noreferrer">{t.githubCta} ↗</a>
           <a className="text-link" href="https://www.taptap.cn/app/78946" target="_blank" rel="noreferrer">{t.communityCta} ↗</a>
         </div>
       </section>
 
-      <footer>
+      <footer className="site-footer">
         <a className="brand footer-brand" href="#top"><Image src="/brand-mark.jpeg" alt="" width={44} height={44} className="brand-mark" /><span className="brand-name"><strong>打破对称</strong><small>BREAK SYMMETRY</small></span></a>
         <p>{t.footerNote}</p>
-        <div><a href="https://breaksymmetry.cn">.CN</a><a href="https://breaksymmetry.net">.NET</a><button type="button" onClick={toggleLocale}>{locale === 'zh' ? 'ENGLISH' : '中文'}</button></div>
-        <small>© {new Date().getFullYear()} BREAK SYMMETRY TECHNOLOGY</small>
+        <div className="footer-domains"><a href="https://breaksymmetry.cn">.CN</a><a href="https://breaksymmetry.net">.NET</a><button type="button" onClick={toggleLocale}>{locale === 'zh' ? 'ENGLISH' : '中文'}</button></div>
+        <div className="footer-legal">
+          <span>成都打破对称科技有限公司</span>
+          <a href="/static/agreement.html" target="_blank">游戏许可及服务协议</a>
+          <a href="/static/privacy.html" target="_blank">游戏隐私保护指引</a>
+          <a href="mailto:info@breaksymmetry.net">info@breaksymmetry.net</a>
+        </div>
+        <div className="footer-filing">
+          <a href="https://beian.mps.gov.cn/#/query/webSearch?code=51015602001170" target="_blank" rel="noreferrer">川公网安备51015602001170</a>
+          <a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">蜀ICP备2024112178号</a>
+          <span>© {new Date().getFullYear()} BREAK SYMMETRY TECHNOLOGY</span>
+        </div>
       </footer>
     </main>
   );
