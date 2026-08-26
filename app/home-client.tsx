@@ -9,12 +9,12 @@ type Locale = 'zh' | 'en';
 
 const copy = {
   zh: {
-    nav: ['业务', '文章', '理念', '联系'],
+    nav: ['游戏', 'Medicine AI', '文章', '联系'],
     heroLabel: '打破既定边界',
     heroTitle: <>为未知，<br /><em>创造新的可能。</em></>,
     heroIntro: '从像素世界到蛋白质系统，我们在成都把技术、设计与长期主义放在一起，探索游戏与 Medicine AI 的下一种形态。',
-    heroPrimary: '探索我们的工作',
-    heroSecondary: '认识打破对称',
+    heroPrimary: '进入游戏工作室',
+    heroSecondary: '进入 Medicine AI',
     fields: ['创造可以进入的世界', '理解生命的复杂语言'],
     sectionLabel: '我们的工作 / WHAT WE DO',
     sectionTitle: <>两个尺度，<br />同一种<em>探索精神。</em></>,
@@ -27,16 +27,23 @@ const copy = {
     gameDesc: '末世像素风动作 Roguelike。一位少女，一颗异星，和一场仍在继续的冒险。',
     gameMetrics: [['11万+', '社区关注'], ['8.4', '玩家评分'], ['3', '全球平台']],
     gameCta: '进入游戏世界',
+    gameDirectionCta: '查看游戏工作室',
     bioKicker: 'MEDICINE AI / 蛋白质智能',
     bioTitle: '把结构、状态与实验连接起来。',
     bioBody: '我们以 Protein Intelligence 为研究方向，建立“证据 → 预测 → 区分性实验 → 数据回流”的可追溯闭环。模型帮助缩小空间，实验保留最终判决权。',
     bioStatus: 'RESEARCH IN PROGRESS / 研究进行中',
+    bioDirectionCta: '查看 Medicine AI',
     bioAreas: [['01', '结构与构象集合'], ['02', '实验派生监督'], ['03', '可追溯研究工作流']],
     journalLabel: '文章与研究日志 / NOTES & STORIES',
-    journalTitle: '把研究、制作与长期迭代，写成可以留下来的文章。',
-    journalIntro: '这里既有 Game AI 与 Medicine AI 的公开研究切片，也有从旧博客重新整理的开发回顾。我们保留证据边界，也保存作品一路形成的过程。',
+    journalTitle: '两条方向，各自留下自己的思考与进展。',
+    journalIntro: '游戏文章与 Medicine AI 研究笔记分开呈现。每条路线都有自己的问题、证据与迭代节奏。',
     journalCta: '阅读文章',
     journalArchiveCta: '查看全部文章',
+    gameNotesTitle: '游戏制作与 Game AI',
+    gameNotesIntro: '原创游戏、玩法系统、AI NPC，以及从旧博客整理的开发档案。',
+    medicineNotesTitle: 'Medicine AI 研究笔记',
+    medicineNotesIntro: '蛋白质结构、状态、实验监督与可追溯研究工作流。',
+    directionCta: '进入方向',
     principleLabel: '我们的理念 / HOW WE THINK',
     principleTitle: '真正的新东西，往往发生在边界被重新定义的时候。',
     principles: [
@@ -56,12 +63,12 @@ const copy = {
     footerNote: '游戏开发 × Medicine AI · 成都，中国',
   },
   en: {
-    nav: ['Work', 'Notes', 'Approach', 'Contact'],
+    nav: ['Games', 'Medicine AI', 'Notes', 'Contact'],
     heroLabel: 'BREAK THE EXPECTED',
     heroTitle: <>Creating new possibilities<br /><em>for the unknown.</em></>,
     heroIntro: 'From pixel worlds to protein systems, our Chengdu team brings technology, design and long-term thinking together to explore what comes next in games and Medicine AI.',
-    heroPrimary: 'Explore our work',
-    heroSecondary: 'Meet Break Symmetry',
+    heroPrimary: 'Enter Game Studio',
+    heroSecondary: 'Enter Medicine AI',
     fields: ['Building worlds you can enter', 'Reading the complex language of life'],
     sectionLabel: 'WHAT WE DO / 我们的工作',
     sectionTitle: <>Two scales.<br />One spirit of <em>exploration.</em></>,
@@ -74,16 +81,23 @@ const copy = {
     gameDesc: 'A post-apocalyptic pixel action roguelike. One girl, one alien world, and an adventure that is still evolving.',
     gameMetrics: [['110K+', 'Community'], ['8.4', 'Player rating'], ['3', 'Global platforms']],
     gameCta: 'Enter the game world',
+    gameDirectionCta: 'Visit Game Studio',
     bioKicker: 'MEDICINE AI / PROTEIN INTELLIGENCE',
     bioTitle: 'Connecting structures, states and experiments.',
     bioBody: 'We are building a traceable evidence → prediction → discriminating experiment → feedback loop. Models narrow the search space; experiments retain the final say.',
     bioStatus: 'RESEARCH IN PROGRESS',
+    bioDirectionCta: 'Visit Medicine AI',
     bioAreas: [['01', 'Structures & ensembles'], ['02', 'Experimental supervision'], ['03', 'Traceable research workflows']],
     journalLabel: 'NOTES & STORIES / 文章与研究日志',
-    journalTitle: 'Research, making and long iteration—written to last.',
-    journalIntro: 'Public Game AI and Medicine AI working notes now sit alongside development stories reconstructed from our earlier blog. We preserve both evidence boundaries and the path a product took to become itself.',
+    journalTitle: 'Two directions, each with its own body of work.',
+    journalIntro: 'Game writing and Medicine AI research notes now have separate homes, reflecting their different questions, evidence and pace of iteration.',
     journalCta: 'Read article',
     journalArchiveCta: 'View all articles',
+    gameNotesTitle: 'Game making & Game AI',
+    gameNotesIntro: 'Original games, play systems, AI NPCs and development archives reconstructed from our early blog.',
+    medicineNotesTitle: 'Medicine AI research notes',
+    medicineNotesIntro: 'Protein structures, states, experimental supervision and traceable research workflows.',
+    directionCta: 'Enter direction',
     principleLabel: 'HOW WE THINK / 我们的理念',
     principleTitle: 'The genuinely new often appears when a boundary is redefined.',
     principles: [
@@ -121,6 +135,8 @@ export default function HomeClient({
 }: HomeClientProps) {
   const [locale, setLocale] = useState<Locale>(initialLocale);
   const t = copy[locale];
+  const gamePosts = journalPostsByDate.filter((post) => post.category !== 'MEDICINE AI');
+  const medicinePosts = journalPostsByDate.filter((post) => post.category === 'MEDICINE AI');
 
   const toggleLocale = () => setLocale((current) => current === 'zh' ? 'en' : 'zh');
 
@@ -132,7 +148,7 @@ export default function HomeClient({
           <span className="brand-name"><strong>打破对称</strong><small>BREAK SYMMETRY</small></span>
         </a>
         <nav aria-label={locale === 'zh' ? '主导航' : 'Primary navigation'}>
-          <a href="#work">{t.nav[0]}</a><a href="#journal">{t.nav[1]}</a><a href="#about">{t.nav[2]}</a><a href="#contact">{t.nav[3]}</a>
+          <Link href="/games">{t.nav[0]}</Link><Link href="/medicine-ai">{t.nav[1]}</Link><a href="#journal">{t.nav[2]}</a><a href="#contact">{t.nav[3]}</a>
         </nav>
         <button className="language-switch" type="button" onClick={toggleLocale} aria-label={locale === 'zh' ? 'Switch to English' : '切换至中文'}>{locale === 'zh' ? 'EN' : '中文'}</button>
       </header>
@@ -145,19 +161,19 @@ export default function HomeClient({
           <h1>{t.heroTitle}</h1>
           <p className="hero-intro">{t.heroIntro}</p>
           <div className="hero-actions">
-            <a className="button button-primary" href="#work">{t.heroPrimary} <span>↗</span></a>
-            <a className="button button-ghost" href="#about">{t.heroSecondary}</a>
+            <Link className="button button-primary" href="/games">{t.heroPrimary} <span>↗</span></Link>
+            <Link className="button button-ghost" href="/medicine-ai">{t.heroSecondary} <span>↗</span></Link>
           </div>
         </div>
         <div className="hero-stage" aria-label={locale === 'zh' ? '游戏开发与 Bio AI 两条业务线' : 'Game development and Bio AI'}>
-          <article className="field-card field-game">
+          <Link className="field-card field-game" href="/games">
             <div className="field-visual"><Image src="/abby-title.png" alt={locale === 'zh' ? '像素动作游戏《艾比之星》画面' : 'Pixel action game Abby Star'} fill sizes="(max-width: 900px) 80vw, 38vw" className="game-image" priority /></div>
-            <div className="field-meta"><span>01 / GAME</span><strong>{t.fields[0]}</strong></div>
-          </article>
-          <article className="field-card field-bio">
+            <div className="field-meta"><span>01 / GAME STUDIO</span><strong>{t.fields[0]}</strong><i>↗</i></div>
+          </Link>
+          <Link className="field-card field-bio" href="/medicine-ai">
             <div className="bio-visual" aria-hidden="true"><span className="bio-core">AI</span><i className="bio-node node-a" /><i className="bio-node node-b" /><i className="bio-node node-c" /><i className="bio-node node-d" /></div>
-            <div className="field-meta"><span>02 / BIO AI</span><strong>{t.fields[1]}</strong></div>
-          </article>
+            <div className="field-meta"><span>02 / MEDICINE AI</span><strong>{t.fields[1]}</strong><i>↗</i></div>
+          </Link>
         </div>
         <p className="hero-note">CHENGDU · CHINA <span>→</span> WORLDWIDE</p>
       </section>
@@ -193,6 +209,7 @@ export default function HomeClient({
               <a href="https://play.google.com/store/apps/details?id=com.BreakSymmetry.AbbyStar" target="_blank" rel="noreferrer">Google Play ↗</a>
             </div>
           </div>
+          <Link className="section-direction-link" href="/games">{t.gameDirectionCta} <span>↗</span></Link>
         </div>
       </section>
 
@@ -202,6 +219,7 @@ export default function HomeClient({
           <h2>{t.bioTitle}</h2>
           <p className="body-copy">{t.bioBody}</p>
           <span className="status-pill"><i /> {t.bioStatus}</span>
+          <Link className="section-direction-link section-direction-link-light" href="/medicine-ai">{t.bioDirectionCta} <span>↗</span></Link>
         </div>
         <div className="bio-system" aria-hidden="true">
           <div className="bio-system-grid" />
@@ -224,17 +242,28 @@ export default function HomeClient({
           </div>
           <p>{t.journalIntro}</p>
         </div>
-        <div className="journal-grid">
-          {journalPostsByDate.map((post, index) => (
-            <a className={`journal-card journal-card-${post.accent}`} href={`/journal/${post.slug}`} key={post.slug}>
-              <div className="journal-card-visual" aria-hidden="true">
-                <span>0{index + 1}</span><i /><i /><i />
+        <div className="journal-tracks">
+          {[
+            { key: 'game', number: '01', title: t.gameNotesTitle, intro: t.gameNotesIntro, href: '/games#notes', posts: gamePosts.slice(0, 3) },
+            { key: 'medicine', number: '02', title: t.medicineNotesTitle, intro: t.medicineNotesIntro, href: '/medicine-ai#notes', posts: medicinePosts },
+          ].map((track) => (
+            <section className={`journal-track journal-track-${track.key}`} key={track.key}>
+              <header>
+                <span>{track.number}</span>
+                <div><h3>{track.title}</h3><p>{track.intro}</p></div>
+              </header>
+              <div className="journal-track-list">
+                {track.posts.map((post) => (
+                  <Link className="journal-track-card" href={`/journal/${post.slug}`} key={post.slug}>
+                    <small>{post.category} · {post.date}</small>
+                    <h4>{post.title[locale]}</h4>
+                    <p>{post.summary[locale]}</p>
+                    <span>{t.journalCta} ↗</span>
+                  </Link>
+                ))}
               </div>
-              <div className="journal-card-meta"><span>{post.category}</span><span>{post.date}</span></div>
-              <h3>{post.title[locale]}</h3>
-              <p>{post.summary[locale]}</p>
-              <span className="journal-card-link">{t.journalCta} <i>↗</i></span>
-            </a>
+              <Link className="journal-track-enter" href={track.href}>{t.directionCta} <span>↗</span></Link>
+            </section>
           ))}
         </div>
         <Link className="journal-all" href="/journal">{t.journalArchiveCta} <span>↗</span></Link>

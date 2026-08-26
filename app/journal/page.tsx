@@ -30,6 +30,26 @@ export const metadata: Metadata = {
 
 export default function JournalIndexPage() {
   const archiveCount = journalPostsByDate.filter((post) => post.kind === 'archive').length;
+  const gamePosts = journalPostsByDate.filter((post) => post.category !== 'MEDICINE AI');
+  const medicinePosts = journalPostsByDate.filter((post) => post.category === 'MEDICINE AI');
+  const groups = [
+    {
+      id: 'game',
+      index: '01',
+      title: isChinaSite ? '游戏制作与 Game AI' : 'Game making & Game AI',
+      description: isChinaSite ? '原创游戏、玩法系统、AI NPC 与开发档案。' : 'Original games, play systems, AI NPCs and development archives.',
+      directionHref: '/games',
+      posts: gamePosts,
+    },
+    {
+      id: 'medicine-ai',
+      index: '02',
+      title: isChinaSite ? 'Medicine AI 研究' : 'Medicine AI research',
+      description: isChinaSite ? '蛋白质结构、状态、实验监督与研究工作流。' : 'Protein structures, states, experimental supervision and research workflows.',
+      directionHref: '/medicine-ai',
+      posts: medicinePosts,
+    },
+  ];
 
   return (
     <main className="journal-index-page">
@@ -52,28 +72,40 @@ export default function JournalIndexPage() {
           : 'Working notes on game development, Game AI and Medicine AI, alongside product and production stories reconstructed from our early blog.'}</p>
         <div className="journal-index-stats">
           <span><strong>{journalPostsByDate.length}</strong> {isChinaSite ? '篇公开文章' : 'public notes'}</span>
+          <span><strong>{gamePosts.length}</strong> {isChinaSite ? '篇游戏文章' : 'game notes'}</span>
+          <span><strong>{medicinePosts.length}</strong> {isChinaSite ? '篇研究文章' : 'Medicine AI notes'}</span>
           <span><strong>{archiveCount}</strong> {isChinaSite ? '篇开发档案' : 'dev archives'}</span>
-          <span><strong>2</strong> {isChinaSite ? '条研究主线' : 'research tracks'}</span>
         </div>
       </section>
 
-      <section className="journal-index-list" aria-label={isChinaSite ? '文章列表' : 'Article list'}>
-        {journalPostsByDate.map((post, index) => (
-          <a className={`journal-index-row journal-card-${post.accent}`} href={`/journal/${post.slug}`} key={post.slug}>
-            <span className="journal-index-number">{String(index + 1).padStart(2, '0')}</span>
-            <div className="journal-index-meta">
-              <span>{post.category}</span>
-              <span>{post.kind === 'archive' ? 'DEV ARCHIVE' : 'WORKING NOTE'}</span>
-              <span>{post.date}</span>
+      <div className="journal-groups" aria-label={isChinaSite ? '分类文章列表' : 'Articles by direction'}>
+        {groups.map((group) => (
+          <section className="journal-group" id={group.id} key={group.id}>
+            <header className="journal-group-header">
+              <span>{group.index}</span>
+              <div><h2>{group.title}</h2><p>{group.description}</p></div>
+              <Link href={group.directionHref}>{isChinaSite ? '进入业务方向' : 'ENTER DIRECTION'} ↗</Link>
+            </header>
+            <div className="journal-index-list">
+              {group.posts.map((post, index) => (
+                <Link className={`journal-index-row journal-card-${post.accent}`} href={`/journal/${post.slug}`} key={post.slug}>
+                  <span className="journal-index-number">{String(index + 1).padStart(2, '0')}</span>
+                  <div className="journal-index-meta">
+                    <span>{post.category}</span>
+                    <span>{post.kind === 'archive' ? 'DEV ARCHIVE' : 'WORKING NOTE'}</span>
+                    <span>{post.date}</span>
+                  </div>
+                  <div className="journal-index-copy">
+                    <h2>{post.title[isChinaSite ? 'zh' : 'en']}</h2>
+                    <p>{post.summary[isChinaSite ? 'zh' : 'en']}</p>
+                  </div>
+                  <span className="journal-index-arrow">↗</span>
+                </Link>
+              ))}
             </div>
-            <div className="journal-index-copy">
-              <h2>{post.title[isChinaSite ? 'zh' : 'en']}</h2>
-              <p>{post.summary[isChinaSite ? 'zh' : 'en']}</p>
-            </div>
-            <span className="journal-index-arrow">↗</span>
-          </a>
+          </section>
         ))}
-      </section>
+      </div>
 
       <footer className="journal-footer">
         <span>{isChinaSite ? '成都打破对称科技有限公司' : 'BREAK SYMMETRY TECHNOLOGY'}</span>

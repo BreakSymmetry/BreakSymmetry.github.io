@@ -17,7 +17,7 @@ const journalSlugs = [
   'abbystar-five-years-later',
   'pixel-icons-as-a-system',
 ];
-const routes = ['/', '/gameinfo', '/journal', ...journalSlugs.map((slug) => `/journal/${slug}`)];
+const routes = ['/', '/games', '/medicine-ai', '/gameinfo', '/journal', ...journalSlugs.map((slug) => `/journal/${slug}`)];
 
 await rm(outputDir, { recursive: true, force: true });
 await mkdir(outputDir, { recursive: true });

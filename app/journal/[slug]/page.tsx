@@ -44,8 +44,15 @@ export default async function JournalPage({ params }: JournalPageProps) {
   const post = getJournalPost(slug);
   if (!post) notFound();
 
-  const postIndex = journalPostsByDate.findIndex((item) => item.slug === post.slug);
-  const nextPost = journalPostsByDate[(postIndex + 1) % journalPostsByDate.length];
+  const isMedicinePost = post.category === 'MEDICINE AI';
+  const directionPosts = journalPostsByDate.filter((item) =>
+    isMedicinePost ? item.category === 'MEDICINE AI' : item.category !== 'MEDICINE AI');
+  const postIndex = directionPosts.findIndex((item) => item.slug === post.slug);
+  const nextPost = directionPosts[(postIndex + 1) % directionPosts.length];
+  const directionHref = isMedicinePost ? '/medicine-ai#notes' : '/games#notes';
+  const directionLabel = isMedicinePost
+    ? (isChinaSite ? '返回 Medicine AI' : 'Back to Medicine AI')
+    : (isChinaSite ? '返回游戏文章' : 'Back to Game Studio');
 
   return (
     <main className="journal-page">
@@ -54,7 +61,7 @@ export default async function JournalPage({ params }: JournalPageProps) {
           <Image src="/brand-mark.jpeg" alt="" width={44} height={44} className="brand-mark" priority />
           <span className="brand-name"><strong>打破对称</strong><small>BREAK SYMMETRY</small></span>
         </Link>
-        <Link className="journal-back" href="/#journal">← {isChinaSite ? '返回研究日志' : 'Back to notes'}</Link>
+        <Link className="journal-back" href={directionHref}>← {directionLabel}</Link>
       </header>
 
       <article className={`journal-article journal-accent-${post.accent}`}>
@@ -99,7 +106,7 @@ export default async function JournalPage({ params }: JournalPageProps) {
       </article>
 
       <a className="journal-next" href={`/journal/${nextPost.slug}`}>
-        <span>NEXT NOTE / 下一篇</span>
+        <span>{isMedicinePost ? 'NEXT MEDICINE AI NOTE' : 'NEXT GAME NOTE'} / 下一篇</span>
         <strong>{nextPost.title.zh}</strong>
         <i>↗</i>
       </a>
