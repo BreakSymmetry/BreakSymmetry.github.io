@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>转炉炼钢 · 攀钢提钒炼钢流程 3D 演示</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--cyan:#4fe3ff;--cyan2:rgba(79,227,255,.18);--amber:#ffb15a;--hot:#ff7a2a;--ink:#e9edf1;--mute:#93a0ab;--glass:rgba(10,14,18,.72);--line:rgba(120,200,230,.22)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#2a1d18;color:var(--ink);font-family:"Noto Sans SC",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;overflow:hidden}
+#app{position:fixed;inset:0}
+#c{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+#labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.tag{position:absolute;transform:translate(-50%,-100%);white-space:nowrap;font-size:12px;letter-spacing:.04em;color:var(--mute);padding:3px 8px;border:1px solid var(--line);background:rgba(8,12,16,.55);border-radius:3px;transition:color .3s,border-color .3s,opacity .3s}
+.tag.active{color:var(--cyan);border-color:var(--cyan);background:rgba(8,20,26,.75)}
+.tag::after{content:"";position:absolute;left:50%;top:100%;width:1px;height:14px;background:currentColor;opacity:.5}
+.tag.dyn{color:#ffd2a6;border-color:rgba(255,160,80,.5);background:rgba(30,14,6,.7)}
+.tag.dyn::after{display:none}
+#title{position:absolute;left:18px;top:14px;pointer-events:none}
+#title h1{margin:0;font-size:18px;font-weight:700;letter-spacing:.08em}
+#title h1 span{color:var(--hot)}
+#title p{margin:4px 0 0;font-size:12px;color:var(--mute);letter-spacing:.06em;font-family:"JetBrains Mono",monospace}
+#panel{position:absolute;right:16px;top:14px;width:340px;max-height:calc(100% - 128px);overflow:auto;background:var(--glass);border:1px solid var(--line);border-radius:6px;padding:16px 16px 14px;backdrop-filter:blur(6px)}
+#panel .no{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--cyan);letter-spacing:.12em}
+#panel h2{margin:2px 0 8px;font-size:20px;font-weight:700;letter-spacing:.04em}
+#phase{font-size:14px;color:var(--amber);min-height:40px;line-height:1.45;padding:8px 10px;border-left:2px solid var(--hot);background:rgba(255,122,42,.07);margin-bottom:10px}
+#desc{font-size:13px;line-height:1.7;color:#c9d1d8;margin:0 0 10px}
+#look{margin:0 0 12px;padding-left:18px;font-size:12.5px;line-height:1.65;color:var(--mute)}
+#badge{display:inline-block;font-size:11px;color:#1a0c04;background:var(--amber);padding:1px 7px;border-radius:2px;margin-left:6px;vertical-align:3px}
+.gauges{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:4px}
+.g{border:1px solid var(--line);border-radius:4px;padding:6px 6px 5px;background:rgba(0,0,0,.25)}
+.g b{display:block;font-size:10.5px;color:var(--mute);font-weight:400}
+.g i{font-style:normal;font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--ink)}
+.g.t i{color:var(--hot)}
+#mat{font-size:12px;color:var(--mute);margin-top:8px;display:flex;justify-content:space-between}
+#mat em{font-style:normal;color:var(--cyan)}
+.note{font-size:11px;color:#6f7b85;margin-top:8px;line-height:1.5}
+#bar{position:absolute;left:16px;right:16px;bottom:14px;background:var(--glass);border:1px solid var(--line);border-radius:6px;padding:10px 12px;backdrop-filter:blur(6px)}
+#pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.pill{font:inherit;font-size:12.5px;color:var(--mute);background:transparent;border:1px solid var(--line);border-radius:3px;padding:4px 9px;cursor:pointer}
+.pill:hover{color:var(--ink);border-color:var(--mute)}
+.pill.on{color:#071419;background:var(--cyan);border-color:var(--cyan)}
+.row{display:flex;align-items:center;gap:10px}
+.btn{font:inherit;font-size:14px;width:34px;height:30px;color:var(--ink);background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:4px;cursor:pointer}
+.btn:hover{border-color:var(--cyan);color:var(--cyan)}
+#scrub{flex:1;accent-color:var(--hot)}
+#clock{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--mute);min-width:96px;text-align:right}
+select,label.ck{font:inherit;font-size:12px;color:var(--mute)}
+select{background:#0e1317;border:1px solid var(--line);border-radius:4px;padding:4px}
+label.ck{display:flex;align-items:center;gap:4px;cursor:pointer;white-space:nowrap}
+#hint{position:absolute;left:18px;top:62px;font-size:11.5px;color:#6f7b85;pointer-events:none}
+#sect{position:absolute;left:16px;bottom:112px;width:300px;background:var(--glass);border:1px solid var(--line);border-radius:6px;padding:8px 10px 6px;backdrop-filter:blur(6px);display:none}
+#sect .st{font-size:12px;color:var(--cyan);letter-spacing:.06em;display:flex;justify-content:space-between}
+#sect .st span{color:var(--mute);font-family:"JetBrains Mono",monospace}
+#sc{display:block;width:280px;height:250px}
+#loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--mute);background:#0c0908;z-index:5}
+#toggle{display:none}
+@media (max-width:820px){
+  #panel{left:10px;right:10px;width:auto;top:auto;bottom:168px;max-height:42%;padding:12px}
+  #panel.min #desc,#panel.min #look,#panel.min .note,#panel.min .gauges,#panel.min #mat{display:none}
+  #toggle{display:block;position:absolute;right:10px;top:8px;font:inherit;font-size:11px;color:var(--cyan);background:none;border:1px solid var(--line);border-radius:3px;padding:2px 6px}
+  #bar{left:8px;right:8px;bottom:8px;padding:8px}
+  .pill{font-size:11.5px;padding:3px 6px}
+  #hint{display:none}
+  #sect{left:8px;top:64px;bottom:auto;width:186px;padding:6px}
+  #sc{width:170px;height:152px}
+  #title h1{font-size:15px}
+  .gauges{grid-template-columns:repeat(4,1fr)}
+  .row{flex-wrap:wrap;gap:8px}
+  #scrub{order:-1;flex-basis:100%}
+  #clock{min-width:0;flex:1;text-align:left;white-space:nowrap;font-size:11px}
+  #panel{max-height:36%}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <canvas id="c"></canvas>
+  <div id="labels"></div>
+  <div id="title">
+    <h1>弄弄坪 · <span>提钒炼钢</span></h1>
+    <p>PANGANG BOF LINE // V-EXTRACTION DUPLEX PROCESS</p>
+  </div>
+  <div id="sect"><div class="st"><b id="sectName" style="font-weight:500">剖面</b><span id="sectAng">0°</span></div><canvas id="sc"></canvas></div>
+  <div id="hint">拖动旋转 · 右键/双指平移 · 滚轮缩放</div>
+  <aside id="panel">
+    <button id="toggle">收起</button>
+    <div class="no" id="no">STAGE 01 / 07</div>
+    <h2 id="name">铁水进站</h2>
+    <div id="phase">—</div>
+    <p id="desc"></p>
+    <ul id="look"></ul>
+    <div class="gauges">
+      <div class="g t"><b>温度 °C</b><i id="gT">—</i></div>
+      <div class="g"><b>碳 C %</b><i id="gC">—</i></div>
+      <div class="g"><b>钒 V %</b><i id="gV">—</i></div>
+      <div class="g"><b>硫 S %</b><i id="gS">—</i></div>
+    </div>
+    <div id="mat"><span>当前物料：<em id="mName">铁水</em></span><span id="mLoc"></span></div>
+    <div class="note">读数为典型值示意，实际随炉次和钢种变化（例如重轨钢的碳含量约 0.7%，这里按低碳钢演示）。</div>
+  </aside>
+  <footer id="bar">
+    <div id="pills"></div>
+    <div class="row">
+      <button class="btn" id="prev" title="上一步">⏮</button>
+      <button class="btn" id="play" title="播放/暂停">❚❚</button>
+      <button class="btn" id="next" title="下一步">⏭</button>
+      <input type="range" id="scrub" min="0" max="100" step="0.01" value="0">
+      <span id="clock">000.0 s</span>
+      <select id="speed" title="速度"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="3">3×</option></select>
+      <label class="ck"><input type="checkbox" id="follow" checked>跟随镜头</label>
+    </div>
+  </footer>
+  <div id="loading">正在点火…</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script>
+(function(){
+'use strict';
+const $=s=>document.querySelector(s);
+if(!window.THREE){ $('#loading').textContent='三维引擎加载失败，请检查网络后刷新。'; return; }
+const V3=THREE.Vector3;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const sm=t=>t*t*(3-2*t);
+const seg=(t,a,b)=>clamp((t-a)/(b-a),0,1);
+const es=(t,a,b)=>sm(seg(t,a,b));
+const rnd=(a,b)=>a+Math.random()*(b-a);
+
+/* ---------------- 流程定义 ---------------- */
+const STAGES=[
+ {name:'铁水进站',dur:6,
+  desc:'高炉炼出的铁水装进铁水罐，由机车推进炼钢厂。攀枝花的钒钛磁铁矿让这里的铁水天然含钒，约 0.3%。正因为有钒，攀钢比普通钢厂多出一道"提钒"工序。',
+  look:['铁水约 1300°C，表面是暗橙色','背景里是高炉群，铁水从那里来'],
+  phases:[[0,'机车推着铁水罐车进站']],
+  cam:{p:[-25,11,32],t:[-40,3,8]}},
+ {name:'铁水脱硫',dur:10,
+  desc:'硫会让钢在热加工时开裂，所以要先去掉。这里用机械搅拌法示意：搅拌头插进铁水罐高速旋转，同时加入石灰基脱硫剂，硫从约 0.06% 降到 0.005% 以下。硫进了浮在表面的脱硫渣里，最后把铁水罐微微倾斜，用扒渣机把渣一耙一耙扒进渣罐。',
+  look:['搅拌时铁水表面形成漩涡','扒渣：铁水罐倾斜，扒渣耙把表面的渣拨出去','脱硫渣如果留着，进转炉后硫会回到钢里'],
+  phases:[[0,'铁水罐车开到脱硫站'],[2,'搅拌头下降，加入脱硫剂'],[3.5,'高速搅拌，铁水形成漩涡'],[8,'提起搅拌头'],[8.6,'倾斜铁水罐，扒渣机把浮渣扒进渣罐']],
+  cam:{p:[-12,13,29],t:[-26,5,9]}},
+ {name:'提钒转炉',dur:23,badge:'攀钢特色',
+  desc:'第一次吹炼，目标不是炼钢而是"抢"钒。顶部氧枪吹入氧气，同时加冷却剂把温度压在较低区间。低温下钒比碳更容易被氧化，于是钒进入炉渣，大部分碳留在铁水里。产物有两样：钒渣（做钒产品的原料）和半钢。',
+  look:['火焰比炼钢转炉小、偏红','出完半钢再从炉口倒出黑褐色的钒渣','钒渣罐由机车拉走，它是攀钢钒产品的原料'],
+  phases:[[0,'铁水罐车开到提钒转炉'],[2,'天车吊起铁水罐，转炉向兑铁侧倾动'],[5,'兑铁水'],[8,'转炉摇正'],[9.5,'下氧枪，开始提钒吹炼'],[10.5,'吹氧中：钒先于碳被氧化，进入炉渣'],[15,'提氧枪，吹炼结束'],[16,'出半钢：转炉倒向出钢侧，半钢从出钢口流进罐里，钒渣浮在上面留在炉内'],[18.5,'翻转转炉，从炉口把钒渣倒进渣罐'],[20.5,'机车把钒渣罐拉走，送去加工钒产品']],
+  cam:{p:[10,16,31],t:[-10,9,0]}},
+ {name:'炼钢转炉',dur:35.5,
+  desc:'半钢兑进炼钢转炉，再吹一次氧：把碳烧到钢的水平，同时去磷、升温。半钢里几乎没有硅、碳也偏低，热量不够，需要加复合造渣剂并适当补吹，这是攀钢"半钢炼钢"的难点。出钢时往钢包里加合金，出钢后先用留在炉里的渣溅渣护炉，再把剩余炉渣倒进渣罐，由机车拉去渣场。',
+  look:['开吹后炉口火焰最猛、火花四溅','火焰变短变软，说明碳快烧完了','出钢 → 溅渣护炉 → 倒渣 → 渣罐拉走：一炉的收尾'],
+  phases:[[0,'半钢罐车开到炼钢转炉跨'],[2.5,'天车吊运半钢罐，转炉倾动'],[5.5,'兑入半钢'],[8.5,'转炉摇正'],[10,'下氧枪，开吹'],[11,'吹炼：脱碳、升温，火焰最猛的阶段'],[12,'从高位料仓加入石灰等造渣料'],[17.5,'火焰变短变软：碳快烧完了，接近终点'],[20,'提枪'],[21,'倾炉测温取样'],[23.5,'出钢：钢水从出钢口流进钢包，同时加合金；末期挡渣，不让炉渣跟进钢包'],[27.5,'转炉摇正'],[28.5,'溅渣护炉：氮气把留在炉里的渣溅到炉衬上，保护耐火砖'],[30.8,'翻转转炉，倒掉剩余炉渣'],[33.5,'机车把钢渣罐拉去渣场']],
+  cam:{p:[30,16,30],t:[10,9,0]}},
+ {name:'LF 精炼',dur:10,
+  desc:'钢包炉（LF）像一口带电极的锅盖：三根石墨电极插下来起弧加热，一边保温，一边按钢种加合金微调成分，并造白渣进一步脱硫，让钢水按时、按温度交给下一步。',
+  look:['电弧闪烁，光偏蓝白','炉盖盖住钢包，减少散热'],
+  phases:[[0,'钢包车开到 LF 工位'],[2.5,'炉盖下降'],[3.5,'石墨电极下降'],[4.5,'电弧加热，微调成分'],[8.5,'抬起电极和炉盖']],
+  cam:{p:[39,12,15],t:[28,6,-3.4]}},
+ {name:'RH 真空',dur:11,
+  desc:'RH 真空处理：真空室下面的两根浸渍管插进钢水，抽真空后，往上升管里吹氩气，钢水被"提"进真空室，再从下降管流回钢包，不断循环。真空下氢、氮等气体被抽走，还能深度脱碳。重轨钢尤其要去氢，防止钢轨内部产生白点裂纹。',
+  look:['钢包被顶起，浸渍管没入钢水','真空室里钢水翻滚，氩气泡一路上浮'],
+  phases:[[0,'钢包车开到 RH 工位'],[2.5,'顶升钢包，浸渍管插入钢水'],[4,'抽真空、吹氩：钢水在真空室里循环脱气'],[9.5,'处理结束，降下钢包']],
+  cam:{p:[53,13,15],t:[42,8,-3.4]}},
+ {name:'连铸',dur:16,
+  desc:'钢包吊上连铸机，钢水经中间包流进铜结晶器。结晶器通水冷却，钢水贴壁凝成一层坯壳，被连续向下拉出，沿弧形段一边喷水冷却一边矫直，最后火焰切割成定尺钢坯。攀钢有板坯和方坯连铸机，重轨钢就是先浇成方坯，再送去轧成百米钢轨。',
+  look:['铸坯从亮橙色慢慢冷成暗红','切割时火花飞溅','1993 年，攀钢 1 号板坯连铸机热试成功'],
+  phases:[[0,'钢包车开往连铸'],[2,'天车把钢包吊上连铸机'],[4.5,'开浇：钢包 → 中间包 → 结晶器'],[8,'铸坯拉出、矫直，火焰切割成定尺']],
+  cam:{p:[84,16,24],t:[72,6,-3.4]}}
+];
+let acc=0; STAGES.forEach(s=>{s.start=acc;acc+=s.dur;});
+const TOTAL=acc; const S=STAGES.map(s=>s.start);
+const X={arrive:-40,kr:-26,cv:-10,cb:10,lf:28,rh:42,cc:58};
+const ZT=-3.4, PIV=10, LH=4.3; /* 出钢侧轨道、转炉耳轴高度、钢包高度（米） */
+
+/* 读数关键帧：时间, C, V, S, 温度 */
+const KF=[
+ [0,4.40,0.30,0.060,1310],[S[1]+3.5,4.40,0.30,0.060,1295],[S[1]+8,4.35,0.30,0.004,1280],
+ [S[2]+10.5,4.35,0.30,0.004,1275],[S[2]+15,3.55,0.035,0.005,1380],[S[3]+11,3.50,0.035,0.006,1350],
+ [S[3]+20,0.06,0.010,0.008,1660],[S[3]+27.5,0.07,0.010,0.008,1620],[S[4]+4.5,0.07,0.010,0.008,1585],
+ [S[4]+8.5,0.07,0.010,0.004,1610],[S[5]+4,0.07,0.010,0.004,1600],[S[5]+9.5,0.03,0.010,0.003,1585],
+ [S[6]+4.5,0.03,0.010,0.003,1570],[TOTAL,0.03,0.010,0.003,1545]];
+function reading(T){
+  for(let i=0;i<KF.length-1;i++){const a=KF[i],b=KF[i+1]; if(T<=b[0]){const k=seg(T,a[0],b[0]); return [1,2,3,4].map(j=>lerp(a[j],b[j],k));}}
+  const l=KF[KF.length-1]; return [l[1],l[2],l[3],l[4]];
+}
+
+/* ---------------- 渲染器 ---------------- */
+const canvas=$('#c');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+const scene=new THREE.Scene();
+const BG=0x2a1d18;
+scene.background=new THREE.Color(BG);
+scene.fog=new THREE.Fog(BG,90,300);
+const camera=new THREE.PerspectiveCamera(45,1,0.1,800);
+camera.position.set(-25,11,32);
+const controls=new THREE.OrbitControls(camera,canvas);
+controls.enableDamping=true; controls.dampingFactor=0.08; controls.maxPolarAngle=1.48;
+controls.minDistance=5; controls.maxDistance=140; controls.target.set(-40,3,8);
+
+let composer=null,bloom=null;
+if(THREE.EffectComposer&&THREE.RenderPass&&THREE.UnrealBloomPass){
+  try{
+    composer=new THREE.EffectComposer(renderer);
+    composer.addPass(new THREE.RenderPass(scene,camera));
+    bloom=new THREE.UnrealBloomPass(new THREE.Vector2(512,512),0.9,0.5,0.55);
+    composer.addPass(bloom);
+  }catch(e){composer=null;}
+}
+
+/* ---------------- 灯光 ---------------- */
+scene.add(new THREE.HemisphereLight(0x7f97a6,0x3a2216,1.9));
+scene.add(new THREE.AmbientLight(0x5a4e48,0.75));
+const moon=new THREE.DirectionalLight(0xbcd6e4,1.05); moon.position.set(-40,60,40); scene.add(moon);
+const warm=new THREE.DirectionalLight(0xff9a60,0.5); warm.position.set(60,20,-60); scene.add(warm);
+
+/* ---------------- 材质 ---------------- */
+const std=(c,m,r,o)=>new THREE.MeshStandardMaterial(Object.assign({color:c,metalness:m,roughness:r},o||{}));
+const M={
+  shell:std(0x5a636d,0.6,0.42,{side:THREE.DoubleSide}),
+  refr:std(0x3b1d14,0.1,1,{side:THREE.DoubleSide}),
+  dark:std(0x343c45,0.5,0.65),
+  steel:std(0x55606b,0.8,0.35),
+  rust:std(0x7a4630,0.35,0.85),
+  concrete:std(0x2b2723,0,0.95),
+  ladle:std(0x4a5058,0.5,0.55,{side:THREE.DoubleSide}),
+  copper:std(0x9a5a2c,0.85,0.35),
+  glass:std(0x5a7080,0.3,0.2,{transparent:true,opacity:0.32,depthWrite:false,side:THREE.DoubleSide}),
+  hazard:std(0x8a6a12,0.3,0.6),
+  cyan:new THREE.MeshBasicMaterial({color:0x2fbfdc}),
+  graphite:std(0x2a2a2a,0.2,0.8)
+};
+const MOLTEN={
+  iron:new THREE.Color(1.0,0.45,0.12),
+  semi:new THREE.Color(1.0,0.55,0.16),
+  steel:new THREE.Color(1.0,0.78,0.36),
+  vslag:new THREE.Color(0.42,0.14,0.05),
+  slag:new THREE.Color(0.75,0.28,0.08)
+};
+const box=(w,h,d,m,x,y,z,parent)=>{const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);(parent||scene).add(o);return o;};
+const cyl=(rt,rb,h,m,x,y,z,parent,seg)=>{const o=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg||20),m);o.position.set(x,y,z);(parent||scene).add(o);return o;};
+
+/* ---------------- 地面与厂房 ---------------- */
+(function ground(){
+  const cv=document.createElement('canvas'); cv.width=cv.height=256; const g=cv.getContext('2d');
+  g.fillStyle='#2c2825'; g.fillRect(0,0,256,256);
+  for(let i=0;i<1600;i++){g.fillStyle='rgba('+(30+Math.random()*30|0)+','+(24+Math.random()*20|0)+','+(20+Math.random()*16|0)+','+Math.random()*0.5+')'; g.fillRect(Math.random()*256,Math.random()*256,2,2);}
+  g.strokeStyle='rgba(90,110,120,.18)'; g.lineWidth=2; g.strokeRect(0,0,256,256);
+  const tex=new THREE.CanvasTexture(cv); tex.wrapS=tex.wrapT=THREE.RepeatWrapping; tex.repeat.set(60,30);
+  const gm=new THREE.Mesh(new THREE.PlaneGeometry(480,240),new THREE.MeshStandardMaterial({map:tex,roughness:1,metalness:0}));
+  gm.rotation.x=-Math.PI/2; scene.add(gm);
+  // 铁轨
+  for(const z of [10,ZT,6.2]) for(const dz of [-0.75,0.75]) box(150,0.12,0.14,M.steel,-8,0.08,z+dz);
+  // 柱子、吊车梁、残缺屋架
+  for(let x=-56;x<=104;x+=8){
+    box(1,33,1,M.dark,x,16.5,-13);
+    box(1,33,1,M.dark,x,16.5,15);
+    box(0.4,0.6,28.5,M.dark,x,33.2,1);
+    if(((x+56)/8)%3!==1) box(7.6,0.15,9,M.rust,x+4,33.6,(x%16===0)?-8:9);
+    const lamp=box(0.25,1.6,0.25,M.cyan,x+0.65,9,15-0.65);
+  }
+  box(162,1.2,1.2,M.dark,24,28.2,-12.6); box(162,1.2,1.2,M.dark,24,28.2,14.6);
+  // 操作室（主控）
+  const pul=new THREE.Group(); pul.position.set(0,0,-11); scene.add(pul);
+  box(6,3,3.6,M.dark,0,9.2,0,pul);
+  box(5.2,1.1,0.05,M.cyan,0,9.6,1.82,pul);
+  for(const x of [-2.6,2.6]) box(0.4,7.6,0.4,M.dark,x,3.8,0,pul);
+})();
+
+/* 远景：山、渣山、高炉 */
+const lavaMat=new THREE.MeshBasicMaterial({color:new THREE.Color(1,0.38,0.08),fog:false});
+(function far(){
+  const mm=std(0x2a1a14,0,1,{flatShading:true});
+  const hills=[[-150,-130,70,48],[-80,-150,60,58],[-10,-140,55,42],[60,-155,75,62],[140,-135,60,46],[200,-150,70,55],[-210,-120,55,40]];
+  hills.forEach(h=>{const c=new THREE.Mesh(new THREE.ConeGeometry(h[2],h[3],6),mm); c.position.set(h[0],h[3]/2-2,h[1]); c.rotation.y=Math.random()*3; scene.add(c);});
+  // 渣山与倾倒熔渣
+  const slagHill=new THREE.Mesh(new THREE.ConeGeometry(42,24,7),std(0x241812,0,1,{flatShading:true}));
+  slagHill.position.set(105,10,-72); scene.add(slagHill);
+  window.__lavaFlows=[];
+  for(let k=0;k<3;k++){
+    const a=-0.5+k*0.35; const p=[];
+    for(let i=0;i<=8;i++){const r=4+i*4.6; p.push(new V3(105+Math.sin(a)*r, 22-i*2.75+0.4, -72+Math.cos(a)*r));}
+    const m=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(p),48,0.9-k*0.15,5),lavaMat.clone());
+    scene.add(m); window.__lavaFlows.push(m);
+  }
+  // 高炉群
+  const bm=std(0x262a2e,0.5,0.7);
+  [[-64,-44],[-46,-48]].forEach(([x,z])=>{
+    cyl(3.2,4.6,26,bm,x,13,z); cyl(1.4,3.2,5,bm,x,28.5,z);
+    for(let i=0;i<3;i++){ cyl(2.4,2.4,22,bm,x-9-i*5.2,11,z-4); const d=new THREE.Mesh(new THREE.SphereGeometry(2.4,16,8,0,Math.PI*2,0,Math.PI/2),bm); d.position.set(x-9-i*5.2,22,z-4); scene.add(d);}
+    box(1.2,1.2,26,bm,x,30,z+11);
+    const glow=new THREE.Mesh(new THREE.TorusGeometry(4.3,0.18,6,32),new THREE.MeshBasicMaterial({color:new THREE.Color(1,0.4,0.1)}));
+    glow.rotation.x=Math.PI/2; glow.position.set(x,5,z); scene.add(glow);
+  });
+})();
+
+/* ---------------- 粒子系统 ---------------- */
+function PSys(n,additive){
+  this.n=n; this.cur=0;
+  this.pos=new Float32Array(n*3); this.col=new Float32Array(n*3); this.size=new Float32Array(n); this.alpha=new Float32Array(n);
+  this.vel=new Float32Array(n*3); this.life=new Float32Array(n); this.max=new Float32Array(n);
+  this.c0=new Float32Array(n*3); this.c1=new Float32Array(n*3); this.s0=new Float32Array(n); this.s1=new Float32Array(n);
+  this.gr=new Float32Array(n); this.dr=new Float32Array(n); this.a0=new Float32Array(n);
+  const g=new THREE.BufferGeometry();
+  this.aPos=new THREE.BufferAttribute(this.pos,3); this.aCol=new THREE.BufferAttribute(this.col,3);
+  this.aSize=new THREE.BufferAttribute(this.size,1); this.aAlpha=new THREE.BufferAttribute(this.alpha,1);
+  [this.aPos,this.aCol,this.aSize,this.aAlpha].forEach(a=>a.setUsage(THREE.DynamicDrawUsage));
+  g.setAttribute('position',this.aPos); g.setAttribute('pcolor',this.aCol); g.setAttribute('size',this.aSize); g.setAttribute('alpha',this.aAlpha);
+  this.mat=new THREE.ShaderMaterial({
+    uniforms:{uScale:{value:600}},
+    vertexShader:'attribute float size;attribute float alpha;attribute vec3 pcolor;varying vec3 vC;varying float vA;uniform float uScale;void main(){vC=pcolor;vA=alpha;vec4 mv=modelViewMatrix*vec4(position,1.0);gl_PointSize=size*uScale/max(0.5,-mv.z);gl_Position=projectionMatrix*mv;}',
+    fragmentShader:'varying vec3 vC;varying float vA;void main(){vec2 d=gl_PointCoord-0.5;float r=length(d);if(r>0.5)discard;float a=vA*pow(1.0-r*2.0,1.5);gl_FragColor=vec4(vC,a);}',
+    transparent:true,depthWrite:false,blending:additive?THREE.AdditiveBlending:THREE.NormalBlending
+  });
+  this.points=new THREE.Points(g,this.mat); this.points.frustumCulled=false; scene.add(this.points);
+}
+PSys.prototype.emit=function(p,v,life,c0,c1,s0,s1,gr,dr,a0){
+  const i=this.cur; this.cur=(this.cur+1)%this.n; const i3=i*3;
+  this.pos[i3]=p.x;this.pos[i3+1]=p.y;this.pos[i3+2]=p.z;
+  this.vel[i3]=v.x;this.vel[i3+1]=v.y;this.vel[i3+2]=v.z;
+  this.life[i]=life;this.max[i]=life;
+  this.c0[i3]=c0[0];this.c0[i3+1]=c0[1];this.c0[i3+2]=c0[2];
+  this.c1[i3]=c1[0];this.c1[i3+1]=c1[1];this.c1[i3+2]=c1[2];
+  this.s0[i]=s0;this.s1[i]=s1;this.gr[i]=gr;this.dr[i]=dr;this.a0[i]=a0;
+};
+PSys.prototype.update=function(dt){
+  for(let i=0;i<this.n;i++){
+    if(this.life[i]<=0){this.alpha[i]=0;continue;}
+    this.life[i]-=dt;
+    if(this.life[i]<=0){this.alpha[i]=0;continue;}
+    const i3=i*3,k=1-this.life[i]/this.max[i],damp=Math.max(0,1-this.dr[i]*dt);
+    this.vel[i3+1]+=this.gr[i]*dt;
+    this.vel[i3]*=damp;this.vel[i3+1]*=damp;this.vel[i3+2]*=damp;
+    this.pos[i3]+=this.vel[i3]*dt;this.pos[i3+1]+=this.vel[i3+1]*dt;this.pos[i3+2]+=this.vel[i3+2]*dt;
+    for(let j=0;j<3;j++) this.col[i3+j]=this.c0[i3+j]+(this.c1[i3+j]-this.c0[i3+j])*k;
+    this.size[i]=this.s0[i]+(this.s1[i]-this.s0[i])*k;
+    this.alpha[i]=this.a0[i]*Math.min(1,k*10)*Math.pow(1-k,0.8);
+  }
+  this.aPos.needsUpdate=this.aCol.needsUpdate=this.aSize.needsUpdate=this.aAlpha.needsUpdate=true;
+};
+const FX=new PSys(7000,true), SM=new PSys(2200,false);
+let DT=0;
+const rate=r=>{const n=r*DT;let c=Math.floor(n);if(Math.random()<n-c)c++;return c;};
+const tv=new V3(), tp=new V3();
+function flames(m,I,hot){
+  const n=rate(230*I);
+  for(let i=0;i<n;i++){
+    tp.set(m.x+rnd(-0.9,0.9),m.y+rnd(0,0.4),m.z+rnd(-0.9,0.9));
+    tv.set(rnd(-1.4,1.4),rnd(6,10)*(0.5+I*0.7),rnd(-1.4,1.4));
+    FX.emit(tp,tv,rnd(0.35,0.8),hot?[1,0.95,0.75]:[1,0.7,0.35],hot?[0.95,0.3,0.05]:[0.7,0.12,0.03],rnd(1,1.6),rnd(2.4,3.6)*(0.4+0.6*I),3,1.4,0.5);
+  }
+}
+function sparks(m,I,spd){
+  const n=rate(110*I); spd=spd||1;
+  for(let i=0;i<n;i++){
+    const a=Math.random()*6.283,s=rnd(3,11)*spd;
+    tp.copy(m); tv.set(Math.cos(a)*s,rnd(4,12)*spd,Math.sin(a)*s);
+    FX.emit(tp,tv,rnd(0.7,1.6),[1,0.92,0.6],[1,0.35,0.05],rnd(0.18,0.3),0.08,-15,0.35,1);
+  }
+}
+function smoke(m,I,tint){
+  const n=rate(30*I);
+  for(let i=0;i<n;i++){
+    tp.set(m.x+rnd(-1.5,1.5),m.y+rnd(-0.5,0.5),m.z+rnd(-1.5,1.5));
+    tv.set(rnd(-0.8,0.8),rnd(1.5,3.5),rnd(-0.8,0.8));
+    const c=tint||[0.28,0.2,0.16];
+    SM.emit(tp,tv,rnd(2,3.5),c,[0.1,0.09,0.09],rnd(1.5,2.5),rnd(5,8),0.3,0.4,0.32);
+  }
+}
+function dust(from,to,I,c){
+  const n=rate(70*I);
+  for(let i=0;i<n;i++){
+    tp.set(from.x+rnd(-0.4,0.4),from.y,from.z+rnd(-0.4,0.4));
+    tv.set((to.x-from.x)*0.6+rnd(-0.3,0.3),rnd(-1,0),(to.z-from.z)*0.6+rnd(-0.3,0.3));
+    SM.emit(tp,tv,rnd(0.8,1.2),c,c,0.22,0.18,-12,0.1,0.95);
+  }
+}
+
+/* ---------------- 熔流 ---------------- */
+function Stream(){ this.mat=new THREE.MeshBasicMaterial({color:0xffffff}); this.mesh=new THREE.Mesh(new THREE.BufferGeometry(),this.mat); this.mesh.visible=false; scene.add(this.mesh); }
+Stream.prototype.show=function(a,b,r,color,straight){
+  const c=straight?a.clone().lerp(b,0.5):new V3(lerp(a.x,b.x,0.85),a.y,lerp(a.z,b.z,0.85));
+  const curve=new THREE.QuadraticBezierCurve3(a.clone(),c,b.clone());
+  this.mesh.geometry.dispose();
+  this.mesh.geometry=new THREE.TubeGeometry(curve,18,r*(0.9+Math.random()*0.2),8,false);
+  this.mat.color.copy(color); this.mesh.visible=true;
+  sparks(b,0.35,0.5);
+};
+Stream.prototype.hide=function(){this.mesh.visible=false;};
+const ST=[new Stream(),new Stream(),new Stream()];
+
+/* ---------------- 设备 ---------------- */
+function makeLadle(scale){
+  const g=new THREE.Group(); scene.add(g); scale=scale||1;
+  const inner=new THREE.Group(); inner.scale.setScalar(scale); g.add(inner);
+  cyl(1.95,1.68,4.3,M.ladle,0,2.15,0,inner,28);
+  const ins=new THREE.Mesh(new THREE.CylinderGeometry(1.76,1.5,4.2,28,1,true),M.refr); ins.position.y=2.2; inner.add(ins);
+  const bot=new THREE.Mesh(new THREE.CircleGeometry(1.68,28),M.ladle); bot.rotation.x=-Math.PI/2; bot.position.y=0.02; inner.add(bot);
+  const rim=new THREE.Mesh(new THREE.TorusGeometry(1.95,0.12,6,32),M.steel); rim.rotation.x=Math.PI/2; rim.position.y=4.3; inner.add(rim);
+  for(const r of [1.1,2.9]){ const b=new THREE.Mesh(new THREE.TorusGeometry(1.75+0.07*r,0.08,5,32),M.steel); b.rotation.x=Math.PI/2; b.position.y=r; inner.add(b); }
+  const tr=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,4.6,8),M.steel); tr.rotation.z=Math.PI/2; tr.position.y=3.4; inner.add(tr);
+  const sMat=new THREE.MeshBasicMaterial({color:0x000000});
+  const surf=new THREE.Mesh(new THREE.CircleGeometry(1.74,32),sMat); inner.add(surf);
+  const crust=new THREE.Mesh(new THREE.RingGeometry(1.0,1.7,32),new THREE.MeshBasicMaterial({color:0x3a1508,transparent:true,opacity:0.55})); surf.add(crust); crust.position.z=0.01;
+  return {g,inner,surf,sMat,crust,scale,fill:0,
+    set(pos,tilt,fill,color){
+      g.position.copy(pos); inner.rotation.x=tilt||0; this.fill=fill;
+      surf.visible=fill>0.03; surf.position.y=0.1+4.0*fill; surf.rotation.x=-Math.PI/2-(tilt||0);
+      const r=lerp(1.55,1.9,fill)/1.74; surf.scale.set(r,r,r);
+      if(color) sMat.color.copy(color);
+    },
+    lip(){ return inner.localToWorld(new V3(0,4.3,-1.95)); },
+    top(){ return g.position.clone().add(new V3(0,LH*scale,0)); }
+  };
+}
+function makeCar(z,withLoco){
+  const g=new THREE.Group(); g.position.z=z; scene.add(g);
+  box(5.2,0.7,3.6,M.dark,0,0.75,0,g); box(5.4,0.12,3.8,M.hazard,0,1.12,0,g);
+  for(const x of [-1.7,1.7]) for(const zz of [-0.75,0.75]){const w=cyl(0.45,0.45,0.25,M.steel,x,0.45,zz,g,12); w.rotation.x=Math.PI/2;}
+  if(withLoco){ box(5,2.6,3,M.rust,-6.6,1.9,0,g); box(2,1.4,3.05,M.dark,-7.8,3.8,0,g); box(1.2,0.6,3.06,M.cyan,-7.8,3.9,0,g); }
+  return g;
+}
+function makeConverter(x){
+  const root=new THREE.Group(); root.position.set(x,0,0); scene.add(root);
+  for(const sx of [-4.9,4.9]){ box(1.3,PIV+0.8,2.8,M.dark,sx,(PIV+0.8)/2,0,root); box(1.6,0.8,3.4,M.hazard,sx,0.4,0,root); }
+  const pivot=new THREE.Group(); pivot.position.y=PIV; root.add(pivot);
+  const P=[[0,-4.3],[1.2,-4.22],[2.1,-3.92],[2.7,-3.38],[3.02,-2.62],[3.1,-1.9],[3.1,1.3],[1.45,4.25],[1.45,4.6]];
+  pivot.add(new THREE.Mesh(new THREE.LatheGeometry(P.map(p=>new THREE.Vector2(p[0],p[1])),40),M.shell));
+  pivot.add(new THREE.Mesh(new THREE.LatheGeometry(P.map(p=>new THREE.Vector2(p[0]*0.88,p[1]*0.97)),40),M.refr));
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(3.45,0.3,10,48),M.dark); ring.rotation.x=Math.PI/2; pivot.add(ring);
+  const axle=new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,10.2,16),M.steel); axle.rotation.z=Math.PI/2; pivot.add(axle);
+  const lip=new THREE.Mesh(new THREE.TorusGeometry(1.5,0.2,8,32),M.rust); lip.rotation.x=Math.PI/2; lip.position.y=4.6; pivot.add(lip);
+  for(let i=0;i<8;i++){const b=box(0.18,3.0,0.18,M.dark,Math.cos(i*0.785)*3.12,-0.3,Math.sin(i*0.785)*3.12,pivot);}
+  const th=cyl(0.32,0.32,0.9,M.steel,0,2.2,-2.75,pivot,10); th.rotation.x=-0.55;
+  const gMat=new THREE.MeshBasicMaterial({color:0x000000});
+  const glow=new THREE.Mesh(new THREE.CircleGeometry(1.42,32),gMat); glow.rotation.x=-Math.PI/2; glow.position.y=3.6; pivot.add(glow);
+  const hood=new THREE.Mesh(new THREE.CylinderGeometry(2.1,3.1,2,24,1,true),M.dark); hood.position.set(0,PIV+6.7,0); root.add(hood);
+  box(2.6,8,2.6,M.dark,0,PIV+11.6,0,root); box(2.6,2.6,9,M.dark,0,PIV+16.3,-3.2,root);
+  const lance=cyl(0.15,0.15,8,M.steel,0,30,0,root,10);
+  box(1.4,5,1.4,M.hazard,2.6,PIV+14,1.6,root); // 高位料仓
+  const light=new THREE.PointLight(0xff7a2a,0,55,2); light.position.set(0,PIV+6,2); root.add(light);
+  return {x,root,pivot,gMat,lance,light,
+    tilt(a){pivot.rotation.x=a;},
+    lanceTip(y){lance.position.y=y+4;},
+    mouth(){return pivot.localToWorld(new V3(0,4.6,0));},
+    tap(){return pivot.localToWorld(new V3(0,2.5,-3.15));},
+    glow(I,color){gMat.color.copy(color).multiplyScalar(clamp(I,0,1));}
+  };
+}
+
+function makeSlagPot(x,z,locoDir,scale){
+  const g=new THREE.Group(); g.position.set(x,0,z); scene.add(g); scale=scale||1;
+  const inner=new THREE.Group(); inner.scale.setScalar(scale); g.add(inner);
+  if(locoDir){ box(4,0.6,3,M.dark,0,0.5,0,inner); for(const xx of [-1.3,1.3]) for(const zz of [-0.75,0.75]){const w=cyl(0.4,0.4,0.25,M.steel,xx,0.4,zz,inner,12); w.rotation.x=Math.PI/2;}
+    box(4.6,2.4,2.8,M.rust,locoDir*4.9,1.8,0,inner); box(1.8,1.3,2.85,M.dark,locoDir*5.8,3.6,0,inner); box(1.1,0.5,2.86,M.cyan,locoDir*5.8,3.7,0,inner); }
+  const base=locoDir?0.8:0;
+  const pot=new THREE.Mesh(new THREE.CylinderGeometry(1.7,1.2,2.2,18,1,true),M.rust); pot.position.y=base+1.1; inner.add(pot);
+  const bot=new THREE.Mesh(new THREE.CircleGeometry(1.2,18),M.rust); bot.rotation.x=-Math.PI/2; bot.position.y=base+0.02; inner.add(bot);
+  const sMat=new THREE.MeshBasicMaterial({color:0x000000});
+  const surf=new THREE.Mesh(new THREE.CircleGeometry(1.0,18),sMat); surf.rotation.x=-Math.PI/2; inner.add(surf);
+  return {g,base,scale,
+    set(x,fill,color,heat){ g.position.x=x; surf.visible=fill>0.02; surf.position.y=base+0.1+2.0*fill; const r=lerp(1.2,1.65,fill); surf.scale.set(r,r,r); sMat.color.copy(color).multiplyScalar(heat); },
+    top(){ return g.position.clone().add(new V3(0,(base+2.2)*scale,0)); }
+  };
+}
+const potV=makeSlagPot(X.cv,6.2,-1), potB=makeSlagPot(X.cb,6.2,1);
+const car1=makeCar(10,true), car2=makeCar(ZT,false), car3=makeCar(ZT,false);
+const ladle1=makeLadle(), ladle2=makeLadle(), ladle3=makeLadle();
+const CV=makeConverter(X.cv), CB=makeConverter(X.cb);
+
+/* 天车 */
+const crane={g:new THREE.Group()};
+scene.add(crane.g);
+box(2.4,1.5,28,M.hazard,0,29.4,1,crane.g);
+crane.trolley=box(3.2,1.2,3.2,M.dark,0,28.2,0,crane.g);
+crane.rope=cyl(0.07,0.07,1,M.steel,0,0,0,crane.g,6);
+crane.rope2=cyl(0.07,0.07,1,M.steel,0,0,0,crane.g,6);
+crane.hook=box(1.6,0.7,0.7,M.steel,0,0,0,crane.g);
+function setCrane(x,z,hookY){
+  crane.g.position.x=x; crane.trolley.position.z=z;
+  const top=27.6, len=Math.max(0.2,top-hookY);
+  for(const [r,dx] of [[crane.rope,-0.5],[crane.rope2,0.5]]){ r.scale.y=len; r.position.set(dx,hookY+len/2,z); }
+  crane.hook.position.set(0,hookY,z);
+}
+function path(pts,T,t0,t1){
+  const n=pts.length-1, k=seg(T,t0,t1)*n, i=Math.min(n-1,Math.floor(k)), f=sm(k-i);
+  return new V3(lerp(pts[i][0],pts[i+1][0],f),lerp(pts[i][1],pts[i+1][1],f),lerp(pts[i][2],pts[i+1][2],f));
+}
+
+/* KR 脱硫站 */
+const KR={g:new THREE.Group()}; KR.g.position.set(X.kr,0,10); scene.add(KR.g);
+for(const z of [-3.6,3.6]) box(0.9,15,0.9,M.dark,-3.6,7.5,z,KR.g);
+box(1.2,1.2,8.2,M.dark,-3.6,15,0,KR.g); box(3.6,1,1,M.dark,-1.8,15,0,KR.g); box(2,1.6,2,M.rust,0,16.4,0,KR.g);
+box(1.2,4,1.2,M.hazard,2.4,12,-2,KR.g);
+KR.imp=new THREE.Group(); KR.g.add(KR.imp);
+cyl(0.22,0.22,10,M.steel,0,5,0,KR.imp,8);
+const bl1=box(2.2,0.7,0.3,M.rust,0,0.3,0,KR.imp), bl2=box(0.3,0.7,2.2,M.rust,0,0.3,0,KR.imp);
+KR.skim=new THREE.Group(); KR.g.add(KR.skim); KR.skim.visible=false;
+box(2.2,0.7,0.25,M.steel,0,-0.2+0.0,0,KR.skim); box(0.3,0.3,8,M.steel,0,0.2,4,KR.skim); box(1.6,1.4,1.8,M.hazard,0,0.4,8.6,KR.skim);
+KR.pot=makeSlagPot(X.kr,4.8,0,0.8);
+
+/* LF */
+const LF={g:new THREE.Group()}; LF.g.position.set(X.lf,0,ZT); scene.add(LF.g);
+box(1.2,16,1.2,M.dark,4,8,-3.6,LF.g); box(1.2,16,1.2,M.dark,-4,8,-3.6,LF.g); box(9.2,1,1.2,M.dark,0,16,-3.6,LF.g);
+box(2.4,4,2.4,M.rust,5.6,2,-5.5,LF.g);
+LF.roof=new THREE.Group(); LF.g.add(LF.roof);
+cyl(1.9,2.35,0.8,M.dark,0,0,0,LF.roof,24); box(0.6,0.6,3.4,M.dark,0,0.3,-2.2,LF.roof);
+LF.el=new THREE.Group(); LF.g.add(LF.el);
+LF.tips=[];
+for(let i=0;i<3;i++){const a=i*2.094+0.5,ex=Math.cos(a)*0.75,ez=Math.sin(a)*0.75; cyl(0.23,0.23,7,M.graphite,ex,3.5,ez,LF.el,10); box(0.5,0.4,4.2,M.copper,ex,6.6,ez-2,LF.el); LF.tips.push(new V3(ex,0,ez));}
+LF.light=new THREE.PointLight(0xbfe4ff,0,30,2); LF.light.position.set(0,6,0); LF.g.add(LF.light);
+
+/* RH */
+const RH={g:new THREE.Group()}; RH.g.position.set(X.rh,0.8,ZT); scene.add(RH.g);
+for(const x of [-3.4,3.4]) box(0.9,20.6,0.9,M.dark,x,9.5,-3.6,RH.g);
+box(8,0.8,1,M.dark,0,18.6,-3.6,RH.g);
+const rhLow=cyl(1.75,1.75,4.6,M.glass,0,9.8,0,RH.g,28), rhUp=cyl(1.2,1.4,5.2,M.glass,0,14.9,0,RH.g,24);
+const rhRing=new THREE.Mesh(new THREE.TorusGeometry(1.78,0.12,6,32),M.steel); rhRing.rotation.x=Math.PI/2; rhRing.position.y=7.5; RH.g.add(rhRing);
+const rhRing2=rhRing.clone(); rhRing2.position.y=12.1; RH.g.add(rhRing2);
+box(0.9,0.9,6,M.dark,0,16.8,-3,RH.g);
+const snMat=std(0x77706a,0.1,0.9);
+cyl(0.36,0.4,2.6,snMat,-0.8,6.2,0,RH.g,14); cyl(0.36,0.4,2.6,snMat,0.8,6.2,0,RH.g,14);
+RH.poolMat=new THREE.MeshBasicMaterial({color:0x000000});
+RH.pool=new THREE.Mesh(new THREE.CircleGeometry(1.65,28),RH.poolMat); RH.pool.rotation.x=-Math.PI/2; RH.pool.position.y=8.0; RH.g.add(RH.pool);
+RH.col=cyl(0.3,0.3,1.2,new THREE.MeshBasicMaterial({color:0x000000}),-0.85,8.4,0,RH.g,10);
+
+/* 连铸：板坯约 1.2 m 宽、0.22 m 厚，弧形半径 9 m */
+renderer.localClippingEnabled=true;
+const CC={};
+const tund=new THREE.Group(); tund.position.set(X.cc+1,12.8,ZT); scene.add(tund);
+box(6,0.25,2.2,M.rust,0,-0.75,0,tund); box(6,1.5,0.25,M.rust,0,0,1.0,tund); box(6,1.5,0.25,M.rust,0,0,-1.0,tund);
+box(0.25,1.5,2.2,M.rust,2.9,0,0,tund); box(0.25,1.5,2.2,M.rust,-2.9,0,0,tund);
+CC.tMat=new THREE.MeshBasicMaterial({color:0x000000});
+const tsurf=new THREE.Mesh(new THREE.PlaneGeometry(5.6,1.8),CC.tMat); tsurf.rotation.x=-Math.PI/2; tsurf.position.y=0.5; tund.add(tsurf);
+for(const x of [-2.6,2.6]) for(const z of [-1.4,1.4]) box(0.4,12,0.4,M.dark,X.cc+1+x,6,ZT+z);
+box(1.0,1.3,1.8,M.copper,X.cc+2,11.25,ZT);
+const sx0=X.cc+2, sy0=10.6, R=9, cx0=sx0+R, cy0=sy0, yEnd=sy0-R, xCut=78, SLEN=R*Math.PI/2+(xCut-cx0);
+const spts=[]; for(let i=0;i<=30;i++){const a=Math.PI+i/30*Math.PI/2; spts.push(new V3(cx0+R*Math.cos(a),cy0+R*Math.sin(a),ZT));}
+for(let i=1;i<=10;i++) spts.push(new V3(cx0+(xCut-cx0)*i/10,yEnd,ZT));
+const sShape=new THREE.Shape(); sShape.moveTo(-0.6,-0.11); sShape.lineTo(0.6,-0.11); sShape.lineTo(0.6,0.11); sShape.lineTo(-0.6,0.11); sShape.lineTo(-0.6,-0.11);
+const sGeo=new THREE.ExtrudeGeometry(sShape,{steps:200,bevelEnabled:false,extrudePath:new THREE.CatmullRomCurve3(spts)});
+{ const pa=sGeo.attributes.position, n=pa.count, cols=new Float32Array(n*3);
+  for(let i=0;i<n;i++){ const x=pa.getX(i), y=pa.getY(i); let sd;
+    if(x<cx0){ let a=Math.atan2(y-cy0,x-cx0); if(a<0) a+=Math.PI*2; if(a<Math.PI) a=Math.PI; sd=R*(a-Math.PI); } else sd=R*Math.PI/2+(x-cx0);
+    const k=Math.pow(clamp(sd/SLEN,0,1),0.7), c0=[1.0,0.62,0.22], c1=[0.32,0.06,0.02];
+    for(let j=0;j<3;j++) cols[i*3+j]=lerp(c0[j],c1[j],k); }
+  sGeo.setAttribute('color',new THREE.BufferAttribute(cols,3)); }
+CC.clip=new THREE.Plane(new V3(-1,0,0),0);
+CC.strand=new THREE.Mesh(sGeo,new THREE.MeshBasicMaterial({vertexColors:true,clippingPlanes:[CC.clip],side:THREE.DoubleSide})); scene.add(CC.strand);
+for(let i=1;i<30;i+=2){ const a=Math.PI+i/30*Math.PI/2; for(const d of [-0.42,0.42]){ const r=cyl(0.3,0.3,1.9,M.steel,cx0+(R+d)*Math.cos(a),cy0+(R+d)*Math.sin(a),ZT,null,10); r.rotation.x=Math.PI/2; } }
+for(let x=cx0+0.8;x<106;x+=1.4){const r=cyl(0.3,0.3,1.9,M.steel,x,yEnd-0.42,ZT,null,10); r.rotation.x=Math.PI/2;}
+box(40,0.5,2.6,M.dark,cx0+18,0.6,ZT);
+box(0.8,2.6,0.8,M.hazard,xCut,yEnd+1.3,ZT-1.6); box(0.3,0.8,0.3,M.steel,xCut,yEnd+0.6,ZT-0.9);
+CC.slabs=[];
+for(let i=0;i<4;i++){const m=std(0x2a1a14,0.4,0.7,{emissive:0x000000}); const sb=box(6,0.22,1.2,m,0,-10,ZT); CC.slabs.push(sb);}
+CC.light=new THREE.PointLight(0xff6a20,0,34,2); CC.light.position.set(X.cc+4,12,ZT+3); scene.add(CC.light);
+
+/* 场景标签 */
+const labelsEl=$('#labels');
+const stationTags=[
+  ['① 铁水进站',new V3(X.arrive,7.5,10)],['② 铁水脱硫',new V3(X.kr,18.5,10)],['③ 提钒转炉',new V3(X.cv,31,0)],
+  ['④ 炼钢转炉',new V3(X.cb,31,0)],['⑤ LF 精炼',new V3(X.lf,18,ZT)],['⑥ RH 真空',new V3(X.rh,22.5,ZT)],['⑦ 连铸',new V3(X.cc+10,16,ZT)]
+].map(([t,p],i)=>{const el=document.createElement('div');el.className='tag';el.textContent=t;labelsEl.appendChild(el);return {el,p,i};});
+const dyn=[];
+function dynTag(text,posFn,showFn){const el=document.createElement('div');el.className='tag dyn';el.textContent=text;labelsEl.appendChild(el);dyn.push({el,posFn,showFn});return el;}
+dynTag('钒渣罐 → 送去做钒产品',()=>potV.top().add(new V3(0,1.6,0)),T=>T>S[2]+19.4&&T<S[2]+23);
+dynTag('钢渣罐 → 渣场',()=>potB.top().add(new V3(0,1.6,0)),T=>T>S[3]+31.8&&T<S[4]);
+dynTag('脱硫渣 → 渣罐',()=>KR.pot.top().add(new V3(0,1.4,0)),T=>T>S[1]+8.8&&T<S[2]);
+dynTag('半钢：钒被提走，碳还剩约 3.5%',()=>ladle2.top().add(new V3(0,1.6,0)),T=>T>S[2]+17.6&&T<S[3]+2.5);
+dynTag('O₂ 氧枪',()=>new V3(X.cv,19.5,1.5),T=>T>S[2]+10.5&&T<S[2]+15);
+dynTag('O₂ 氧枪',()=>new V3(X.cb,19.5,1.5),T=>T>S[3]+11&&T<S[3]+20);
+dynTag('石灰 · 造渣料',()=>new V3(X.cb+2.6,PIV+17.4,1.6),T=>T>S[3]+12&&T<S[3]+15);
+const sampleTag=dynTag('测温取样',()=>new V3(X.cb,17.5,4),T=>T>S[3]+21.4&&T<S[3]+23.4);
+dynTag('合金加入钢包',()=>new V3(X.cb+2.8,9.2,ZT-1.4),T=>T>S[3]+24.5&&T<S[3]+27.5);
+dynTag('N₂ 溅渣护炉',()=>new V3(X.cb,19.5,1.5),T=>T>S[3]+29&&T<S[3]+30.3);
+dynTag('电弧加热',()=>new V3(X.lf,11.5,ZT),T=>T>S[4]+4.5&&T<S[4]+8.5);
+dynTag('真空室 · 钢水循环',()=>new V3(X.rh+2.6,13,ZT),T=>T>S[5]+4&&T<S[5]+9.5);
+dynTag('中间包',()=>new V3(X.cc+1,14.8,ZT+1.2),T=>T>S[6]+4.5);
+dynTag('结晶器',()=>new V3(X.cc+3.4,11.4,ZT+1.2),T=>T>S[6]+5);
+dynTag('火焰切割',()=>new V3(xCut,4.2,ZT),T=>T>S[6]+8.5);
+dynTag('远处：倾倒熔渣的渣山',()=>new V3(98,30,-72),T=>T<S[1]||T>S[6]+10);
+
+/* ---------------- 转炉剖面小窗 ---------------- */
+const PROF=[[0,-4.3],[1.2,-4.22],[2.1,-3.92],[2.7,-3.38],[3.02,-2.62],[3.1,-1.9],[3.1,1.3],[1.45,4.25],[1.45,4.6]];
+const ringP=(sr,sy)=>{const r=PROF.map(p=>[p[0]*sr,p[1]*sy]);return [[0,r[0][1]]].concat(r.slice(1),r.slice(1).reverse().map(p=>[-p[0],p[1]]));};
+const OUTER=ringP(1,1), LINING=ringP(0.95,0.985), INNER=ringP(0.86,0.965);
+const rotP=(p,a)=>[p[1]*Math.sin(a)+p[0]*Math.cos(a), p[1]*Math.cos(a)-p[0]*Math.sin(a)];
+function polyArea(p){let s=0;for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length];s+=a[0]*b[1]-b[0]*a[1];}return Math.abs(s)/2;}
+function clipBelow(p,L){const o=[];for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length],ia=a[1]<=L,ib=b[1]<=L;if(ia)o.push(a);if(ia!==ib){const t=(L-a[1])/(b[1]-a[1]);o.push([a[0]+(b[0]-a[0])*t,L]);}}return o;}
+function levelFor(p,target){let lo=Infinity,hi=-Infinity;p.forEach(q=>{lo=Math.min(lo,q[1]);hi=Math.max(hi,q[1]);});if(target<=0)return lo-1;for(let i=0;i<32;i++){const m=(lo+hi)/2;if(polyArea(clipBelow(p,m))<target)lo=m;else hi=m;}return (lo+hi)/2;}
+const INNER_A=polyArea(INNER);
+const sc=$('#sc'), sctx=sc.getContext('2d'); let sdpr=1;
+function sizeSect(){ const r=sc.getBoundingClientRect(); sdpr=Math.min(window.devicePixelRatio||1,2); sc.width=Math.max(10,r.width*sdpr); sc.height=Math.max(10,r.height*sdpr); }
+const css=c=>'rgb('+Math.round(c.r*255)+','+Math.round(c.g*255)+','+Math.round(c.b*255)+')';
+let SECT=null;
+function drawSection(st,T){
+  const box_=$('#sect');
+  if(!st){ box_.style.display='none'; return; }
+  if(box_.style.display!=='block'){ box_.style.display='block'; sizeSect(); }
+  $('#sectName').textContent='剖面 · '+st.name; $('#sectAng').textContent='倾角 '+Math.round(st.tilt*57.3)+'°';
+  const ctx=sctx, W=sc.width/sdpr, H=sc.height/sdpr; ctx.setTransform(sdpr,0,0,sdpr,0,0); ctx.clearRect(0,0,W,H);
+  const k=H/13.2, ox=W/2, oy=H*0.56;
+  const P=p=>[ox+p[0]*k,oy-p[1]*k];
+  const path=poly=>{ctx.beginPath();poly.forEach((p,i)=>{const q=P(p);i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]);});ctx.closePath();};
+  const a=st.tilt, R=p=>rotP(p,a);
+  const out=OUTER.map(R), lin=LINING.map(R), inn=INNER.map(R);
+  path(out); ctx.fillStyle='#5d666f'; ctx.fill();
+  path(lin); ctx.fillStyle='#7d3a22'; ctx.fill();
+  path(inn); ctx.fillStyle='#140b08'; ctx.fill();
+  // 炉口开口
+  ctx.save(); ctx.globalCompositeOperation='destination-out'; path([[-1.25,4.2],[1.25,4.2],[1.25,5],[-1.25,5]].map(R)); ctx.fill(); ctx.restore();
+  // 液体
+  const Lm=levelFor(inn,st.metal*INNER_A), Ls=levelFor(inn,(st.metal+st.slag)*INNER_A);
+  ctx.save(); path(inn); ctx.clip();
+  if(st.slag>0.002){ const y=P([0,Ls])[1]; ctx.fillStyle=css(st.slagColor); ctx.fillRect(0,y,W,H-y); }
+  if(st.metal>0.002){ const y=P([0,Lm])[1]; ctx.fillStyle=css(st.metalColor); ctx.fillRect(0,y,W,H-y);
+    ctx.fillStyle='rgba(255,240,200,0.35)'; ctx.fillRect(0,y,W,2); }
+  if(st.blow>0&&st.metal>0.01){
+    const tip=P([0,st.lance-PIV]); const y=P([0,Lm])[1];
+    ctx.fillStyle='rgba(220,240,255,'+(0.35*st.blow)+')'; ctx.beginPath(); ctx.moveTo(tip[0]-2,tip[1]); ctx.lineTo(tip[0]+2,tip[1]); ctx.lineTo(tip[0]+14,y+10); ctx.lineTo(tip[0]-14,y+10); ctx.closePath(); ctx.fill();
+    for(let i=0;i<34;i++){ const h=Math.sin(i*91.7)*0.5+0.5, h2=Math.sin(i*37.3)*0.5+0.5; const ph=(T*1.6+h2)%1;
+      const x=ox+(h-0.5)*k*4.4, yy=lerp(oy+k*3.6,y,ph); ctx.fillStyle='rgba(255,245,220,'+(0.5*st.blow*(1-ph*0.5))+')'; ctx.beginPath(); ctx.arc(x,yy,1.2+2.2*h2,0,6.283); ctx.fill(); }
+  }
+  if(st.splash){ for(let i=0;i<40;i++){ const h=Math.sin(i*12.9898+T*7)*0.5+0.5, v=Math.sin(i*78.233+T*5)*0.5+0.5; ctx.fillStyle='rgba(220,220,225,0.7)'; ctx.beginPath(); ctx.arc(ox+(h-0.5)*k*5.2,oy-(v*7-3.5)*k,1.6,0,6.283); ctx.fill(); } }
+  ctx.restore();
+  // 出钢口
+  const tin=R([-2.4,1.85]), tout=R([-3.15,2.5]);
+  ctx.lineCap='round'; ctx.strokeStyle='#cfd6dc'; ctx.lineWidth=7; ctx.beginPath(); let q=P(tin); ctx.moveTo(q[0],q[1]); q=P(tout); ctx.lineTo(q[0],q[1]); ctx.stroke();
+  ctx.strokeStyle='#1a0f0b'; ctx.lineWidth=4; ctx.stroke();
+  // 氧枪
+  if(st.lance<19){ const top=P([0,8.5]), tip=P([0,st.lance-PIV]); ctx.fillStyle='#a9b4bd'; ctx.fillRect(top[0]-2.5,0,5,tip[1]); }
+  // 炉口火焰
+  const mo=P(R([0,4.6]));
+  if(st.blow>0){ for(let i=0;i<6;i++){ const f=0.6+0.4*Math.sin(T*23+i*1.7); ctx.fillStyle='rgba(255,'+(140+i*15)+',60,'+(0.25*st.blow)+')'; ctx.beginPath(); ctx.moveTo(mo[0]-16+i*2,mo[1]); ctx.lineTo(mo[0]+16-i*2,mo[1]); ctx.lineTo(mo[0]+Math.sin(T*9+i)*4,mo[1]-(22+i*4)*f*st.blow); ctx.closePath(); ctx.fill(); } }
+  // 熔流
+  const pour=(p0,col,w)=>{ const p1=[p0[0]+(p0[0]>ox?18:-18),p0[1]+6], p2=[p0[0]+(p0[0]>ox?26:-26),H]; ctx.strokeStyle=col; ctx.lineWidth=w; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(p0[0],p0[1]); ctx.quadraticCurveTo(p1[0],p1[1],p2[0],p2[1]); ctx.stroke(); };
+  if(st.tap) pour(P(tout),css(st.metalColor),4);
+  if(st.charge){ ctx.strokeStyle=css(st.metalColor); ctx.lineWidth=4; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(W-6,4); ctx.quadraticCurveTo(mo[0]+10,mo[1]-30,mo[0]+2,mo[1]+4); ctx.stroke(); }
+  if(st.slagPour) pour(P(R([1.3,4.6])),css(st.slagColor),5);
+  // 标注
+  ctx.font='11.5px "Noto Sans SC",sans-serif'; ctx.textBaseline='middle';
+  const lab=(txt,p,dx,col)=>{ const x=p[0]+dx, y=p[1]; ctx.strokeStyle='rgba(180,200,210,0.6)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(p[0],p[1]); ctx.lineTo(x+(dx>0?-3:3),y); ctx.stroke(); ctx.fillStyle=col||'#d8e0e6'; ctx.textAlign=dx>0?'left':'right'; ctx.fillText(txt,x,y); };
+  const edgeX=(L,side)=>{ const c=clipBelow(inn,L); let v=side>0?-1e9:1e9; c.forEach(p=>{ if(Math.abs(p[1]-L)<1e-3) v=side>0?Math.max(v,p[0]):Math.min(v,p[0]); }); return v; };
+  if(st.metal>0.01){ let lo=1e9; inn.forEach(p=>lo=Math.min(lo,p[1])); const y=(lo+Lm)/2; const xr=edgeX(y,1); lab(st.metalName,P([isFinite(xr)&&Math.abs(xr)<9?xr-0.4:0,y]),W-(P([xr,y])[0])-44,'#ffd09a'); }
+  if(st.slag>0.004){ const xl=edgeX(Ls,-1); const p=P([isFinite(xl)&&Math.abs(xl)<9?xl+0.45:0,Ls-0.12]); ctx.strokeStyle='rgba(180,200,210,0.6)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(p[0],p[1]); ctx.lineTo(8+ctx.measureText(st.slagName).width+4,p[1]); ctx.stroke(); ctx.fillStyle='#e8b98e'; ctx.textAlign='left'; ctx.fillText(st.slagName,6,p[1]); }
+  lab('出钢口',P(tout),tout[0]<0?-18:18,'#cfd6dc');
+  lab('炉口',mo,mo[0]>ox?20:-20,'#cfd6dc');
+  if(st.lance<19) { const t=P([0,Math.min(st.lance-PIV+1.2,6)]); lab('氧枪',t,22,'#cfd6dc'); }
+}
+window.addEventListener('resize',()=>{ if($('#sect').style.display==='block') sizeSect(); });
+
+/* ---------------- 主更新 ---------------- */
+const C_IRON=MOLTEN.iron,C_SEMI=MOLTEN.semi,C_STEEL=MOLTEN.steel;
+const tmpC=new THREE.Color(), tmpC2=new THREE.Color();
+function update(T){
+  ST.forEach(s=>s.hide()); SECT=null;
+  let craneSet=false;
+  const t2=T-S[2], t3=T-S[3], t4=T-S[4], t5=T-S[5], t6=T-S[6], t1=T-S[1];
+
+  /* 车1 + 铁水罐 */
+  let c1x;
+  if(T<S[1]) c1x=lerp(-82,X.arrive,es(T,0,5));
+  else if(T<S[2]) c1x=lerp(X.arrive,X.kr,es(T,S[1],S[1]+2));
+  else c1x=lerp(X.kr,X.cv,es(T,S[2],S[2]+2));
+  car1.position.x=c1x;
+  let l1p=new V3(c1x,1.1,10), l1t=0, l1f=0.85;
+  if(t1>=8.6&&t1<10) l1t=-0.32*es(t1,8.6,9.0)*(1-es(t1,9.7,10));
+  const hang1=[[X.cv,1.1,10],[X.cv,15,10],[X.cv,15,8.6]];
+  if(t2>=2&&t2<5){ l1p=path(hang1,t2,2,5); }
+  else if(t2>=5&&t2<8){ l1p=new V3(X.cv,15,8.6); l1t=-1.15*es(t2,5,5.7); l1f=lerp(0.85,0.04,seg(t2,5.5,8)); }
+  else if(t2>=8&&t2<11){ l1p=path(hang1.slice().reverse(),t2,8,11); l1t=-1.15*(1-es(t2,8,8.8)); l1f=0.04; }
+  else if(t2>=11) l1f=0.04;
+  ladle1.set(l1p,l1t,l1f,C_IRON);
+  if(t2>=2&&t2<11){ setCrane(X.cv,l1p.z,l1p.y+5); craneSet=true; }
+
+  /* KR 脱硫 */
+  let impY=10, spin=0;
+  if(t1>=2&&t1<3.5) impY=lerp(10,3.0,es(t1,2,3.5));
+  else if(t1>=3.5&&t1<8){ impY=3.0; spin=1; }
+  else if(t1>=8&&t1<9) impY=lerp(3.0,10,es(t1,8,9));
+  KR.imp.position.y=impY; KR.imp.rotation.y+=spin*DT*14;
+  if(spin){ ladle1.surf.rotation.z+=DT*6; sparks(new V3(X.kr,4.8,10),0.25,0.5); }
+  if(t1>=2.5&&t1<4.5) dust(new V3(X.kr+2.4,10,8),new V3(X.kr,4.8,10),1,[0.75,0.74,0.7]);
+  KR.skim.visible=t1>=8.8&&t1<10;
+  if(KR.skim.visible){ const k=(t1-9.0)/0.7; const stroke=k<0?0:(k*2)%1; KR.skim.position.set(0,5.4,lerp(1.4,-2.0,sm(stroke))); }
+  const skimK=seg(t1,9.0,9.7);
+  ladle1.crust.visible=T<S[1]+9.7;
+  if(T>=S[1]&&T<S[1]+9.7) ladle1.crust.scale.setScalar(lerp(1,0.25,skimK));
+  if(t1>=9.0&&t1<9.7){ const L=ladle1.lip(), P=KR.pot.top(); const tf=Math.sqrt(2*Math.max(0.5,L.y-P.y)/12)+0.05;
+    for(let i=0;i<rate(90);i++){ tp.set(L.x+rnd(-1,1),L.y+0.1,L.z); tv.set(rnd(-0.3,0.3),rnd(0,0.6),(P.z-L.z)/tf+rnd(-0.4,0.4)); FX.emit(tp,tv,tf+0.1,[0.75,0.3,0.08],[0.35,0.1,0.03],0.45,0.35,-12,0,0.9); } }
+  KR.pot.set(X.kr,(T>=S[1]&&T<S[2])?0.6*skimK:(T>=S[2]?0.6:0),MOLTEN.slag,(T>=S[1]&&T<S[2]+3)?0.6:0.15);
+
+  /* 提钒转炉 */
+  let a=0;
+  if(t2>=2&&t2<5) a=0.9*es(t2,2,4.5);
+  else if(t2>=5&&t2<8) a=0.9;
+  else if(t2>=8&&t2<9.5) a=0.9*(1-es(t2,8,9.5));
+  else if(t2>=16&&t2<18.5) a=-1.66*es(t2,16,17);
+  else if(t2>=18.5&&t2<20) a=lerp(-1.66,2.1,es(t2,18.5,19.3));
+  else if(t2>=20&&t2<21) a=2.1*(1-es(t2,20,21));
+  CV.tilt(a);
+  const LUP=19.5, LBLOW=8.8;
+  let lv=LUP;
+  if(t2>=9.5&&t2<10.5) lv=lerp(LUP,LBLOW,es(t2,9.5,10.5)); else if(t2>=10.5&&t2<15) lv=LBLOW+Math.sin(T*3)*0.12; else if(t2>=15&&t2<16) lv=lerp(LBLOW,LUP,es(t2,15,16));
+  CV.lanceTip(lv);
+  const blowV=(t2>=10.5&&t2<15)?Math.min(1,(t2-10.5)/0.6)*Math.min(1,(15-t2)/0.4):0;
+  const fullV=(t2>=5.6&&t2<18.3)?1:0;
+  if(t2>=5.4&&t2<8) ST[0].show(ladle1.lip(),CV.mouth(),0.38,C_IRON);
+  if(blowV>0){ const m=CV.mouth(); flames(m,blowV*0.7,false); sparks(m,blowV*0.5); smoke(new V3(X.cv,PIV+6.2,0),blowV*0.6,[0.3,0.18,0.12]); }
+  if(T>=S[2]&&T<S[3]){
+    let mt=0; if(t2>=5.4&&t2<8) mt=0.15*seg(t2,5.4,8); else if(t2>=8&&t2<17) mt=0.15; else if(t2>=17&&t2<18.3) mt=lerp(0.15,0.008,seg(t2,17,18.3)); else if(t2>=18.3&&t2<20) mt=0.008;
+    let sl=0; if(t2>=10.5&&t2<19.3) sl=0.07*seg(t2,10.5,15); else if(t2>=19.3&&t2<20) sl=0.07*(1-seg(t2,19.3,20));
+    SECT={name:'提钒转炉',tilt:a,metal:mt,slag:sl,lance:lv,blow:blowV,tap:t2>=17&&t2<18.3,slagPour:t2>=19.2&&t2<20,splash:false,
+      metalName:t2<14?'铁水':'半钢',slagName:'钒渣（浮在上面）',charge:t2>=5.4&&t2<8,metalColor:t2<14?C_IRON:C_SEMI,slagColor:tmpC2.setRGB(0.55,0.27,0.12)};
+  }
+  CV.glow(fullV*0.45+blowV*0.55+((t2>=18.3&&t2<20.2)?0.25:0),blowV>0?tmpC.setRGB(1,0.62,0.25):C_IRON);
+  CV.light.intensity=blowV*(2.6+Math.random()*0.8)+fullV*0.4;
+  let l2f=0;
+  if(t2>=17&&t2<18.3){ ST[1].show(CV.tap(),ladle2.top().add(new V3(0,-0.6,0)),0.3,C_SEMI); }
+  if(T>=S[2]+17) l2f=lerp(0,0.85,seg(t2,17,18.3));
+  if(t2>=19.2&&t2<20){ ST[2].show(CV.mouth(),potV.top(),0.5,MOLTEN.vslag); }
+  { const f=T<S[2]?0:0.75*seg(t2,19.3,20); const px=lerp(X.cv,-48,es(t2,20.5,23)); potV.set(px,f,tmpC.setRGB(0.55,0.2,0.07),f>0?Math.max(0.35,1-(t2-20)/6):0); potV.g.visible=!(T>=S[2]+23); }
+
+  /* 车2 + 半钢罐 */
+  const c2x=lerp(X.cv,4,es(t3,0,2.5));
+  car2.position.x=c2x;
+  let l2p=new V3(c2x,1.1,ZT), l2t=0;
+  const hang2=[[4,1.1,ZT],[4,15,ZT],[4,15,8.6],[X.cb,15,8.6]];
+  if(t3>=2.5&&t3<5.5){ l2p=path(hang2,t3,2.5,5.5); }
+  else if(t3>=5.5&&t3<8.5){ l2p=new V3(X.cb,15,8.6); l2t=-1.15*es(t3,5.5,6.2); l2f=lerp(0.85,0.04,seg(t3,6,8.5)); }
+  else if(t3>=8.5&&t3<10.5){ l2p=path([[X.cb,15,8.6],[24,15,8.6]],t3,8.5,10.5); l2t=-1.15*(1-es(t3,8.5,9.2)); l2f=0.04; }
+  ladle2.set(l2p,l2t,l2f,C_SEMI);
+  ladle2.g.visible=T<S[3]+10.4;
+  ladle2.crust.visible=false;
+  if(t3>=2.5&&t3<10.5){ setCrane(l2p.x,l2p.z,l2p.y+5); craneSet=true; }
+
+  /* 炼钢转炉 */
+  let b=0;
+  if(t3>=2.5&&t3<5.5) b=0.9*es(t3,2.5,5);
+  else if(t3>=5.5&&t3<8.5) b=0.9;
+  else if(t3>=8.5&&t3<10) b=0.9*(1-es(t3,8.5,10));
+  else if(t3>=21&&t3<23.5) b=0.55*es(t3,21,21.6)*(1-es(t3,22.8,23.5));
+  else if(t3>=23.5&&t3<27.5) b=-1.66*es(t3,23.5,24.5);
+  else if(t3>=27.5&&t3<28.5) b=-1.66*(1-es(t3,27.5,28.5));
+  else if(t3>=30.8&&t3<33.3) b=2.1*es(t3,30.8,31.6);
+  else if(t3>=33.3&&t3<34.1) b=2.1*(1-es(t3,33.3,34.1));
+  CB.tilt(b);
+  let lb=LUP;
+  if(t3>=10&&t3<11) lb=lerp(LUP,LBLOW,es(t3,10,11)); else if(t3>=11&&t3<20) lb=LBLOW+Math.sin(T*3)*0.12; else if(t3>=20&&t3<21) lb=lerp(LBLOW,LUP,es(t3,20,21));
+  else if(t3>=28.5&&t3<29) lb=lerp(LUP,LBLOW+0.4,es(t3,28.5,29)); else if(t3>=29&&t3<30.3) lb=LBLOW+0.4; else if(t3>=30.3&&t3<30.8) lb=lerp(LBLOW+0.4,LUP,es(t3,30.3,30.8));
+  CB.lanceTip(lb);
+  let blowB=0;
+  if(t3>=11&&t3<20){ blowB=Math.min(1,(t3-11)/0.6)*Math.min(1,(20-t3)/0.3); if(t3>17.5) blowB*=lerp(1,0.45,seg(t3,17.5,19.5)); }
+  const fullB=(t3>=6.1&&t3<27.4)?1:0;
+  if(t3>=5.9&&t3<8.5) ST[0].show(ladle2.lip(),CB.mouth(),0.38,C_SEMI);
+  if(blowB>0){ const m=CB.mouth(); flames(m,blowB,t3>12.5); sparks(m,blowB*1.2,1.15); smoke(new V3(X.cb,PIV+6.2,0),blowB*(t3<13?1.4:0.6),t3<13?[0.35,0.22,0.14]:[0.25,0.22,0.2]); }
+  if(t3>=12&&t3<15) dust(new V3(X.cb+2.6,PIV+11.5,1.6),new V3(X.cb,PIV+4.6,0),1.2,[0.92,0.9,0.85]);
+  if(t3>=29&&t3<30.3){ const m=CB.mouth(); for(let i=0;i<rate(160);i++){ tv.set(rnd(-4,4),rnd(4,10),rnd(-4,4)); SM.emit(m,tv,rnd(0.6,1.4),[0.85,0.85,0.88],[0.4,0.4,0.42],0.6,2.2,-4,0.6,0.55);} sparks(m,0.5,0.8); }
+  if(T>=S[3]&&T<S[4]){
+    let mt=0; if(t3>=5.9&&t3<8.5) mt=0.15*seg(t3,5.9,8.5); else if(t3>=8.5&&t3<24.5) mt=0.15; else if(t3>=24.5&&t3<27.5) mt=lerp(0.15,0.006,seg(t3,24.5,27.5)); else if(t3>=27.5&&t3<31.6) mt=0.006;
+    let sl=0; if(t3>=11&&t3<29) sl=0.06*seg(t3,11,19); else if(t3>=29&&t3<31.6) sl=lerp(0.06,0.045,seg(t3,29,30.3)); else if(t3>=31.6&&t3<33.3) sl=0.045*(1-seg(t3,31.6,33.3));
+    SECT={name:'炼钢转炉',tilt:b,metal:mt,slag:sl,lance:lb,blow:blowB,tap:t3>=24.5&&t3<27.5,slagPour:t3>=31.6&&t3<33.3,splash:t3>=29&&t3<30.3,
+      metalName:t3<19?'半钢':'钢水',slagName:'炉渣（浮在上面）',charge:t3>=5.9&&t3<8.5,metalColor:t3<19?C_SEMI:C_STEEL,slagColor:tmpC2.setRGB(0.55,0.42,0.3)};
+  }
+  CB.glow(fullB*0.5+blowB*0.5+((t3>=27.4&&t3<33.4)?0.3:0),blowB>0?tmpC.setRGB(1,0.85,0.5):C_SEMI);
+  CB.light.intensity=blowB*(3.4+Math.random()*1.2)+fullB*0.5+((t3>=29&&t3<30.3)?0.6:0);
+  sampleTag.textContent='测温取样 · '+Math.round(reading(T)[3])+'°C · C '+reading(T)[0].toFixed(2)+'%';
+
+  /* 车3 + 钢包 */
+  let c3x=X.cb;
+  if(T>=S[6]) c3x=lerp(X.rh,52,es(t6,0,2));
+  else if(T>=S[5]) c3x=lerp(X.lf,X.rh,es(t5,0,2.5));
+  else if(T>=S[4]) c3x=lerp(X.cb,X.lf,es(t4,0,2.5));
+  car3.position.x=c3x;
+  let l3f=0; if(T>=S[3]+24.5) l3f=lerp(0,0.85,seg(t3,24.5,27.5));
+  let l3p=new V3(c3x,1.1,ZT), l3t=0;
+  if(t5>=2.5&&t5<11&&T<S[6]) l3p.y+=1.6*es(t5,2.5,4)*(1-es(t5,9.5,11));
+  const hang3=[[52,1.1,ZT],[52,15.6,ZT],[X.cc,15.6,ZT],[X.cc,14.3,ZT]];
+  if(t6>=2&&t6<4.5) l3p=path(hang3,t6,2,4.5);
+  else if(t6>=4.5&&t6<15){ l3p=new V3(X.cc,14.3,ZT); l3f=lerp(0.85,0.12,seg(t6,4.5,15)); }
+  else if(t6>=15) { l3p=new V3(X.cc,lerp(14.3,15.6,es(t6,15,16)),ZT); l3f=0.12; }
+  ladle3.set(l3p,l3t,l3f,C_STEEL); ladle3.crust.visible=false;
+  if(t6>=2){ setCrane(X.cc,ZT,l3p.y+5); craneSet=true; }
+  if(t3>=24.5&&t3<27.5){ ST[1].show(CB.tap(),ladle3.top().add(new V3(0,-0.6,0)),0.32,C_STEEL); dust(new V3(X.cb+2.8,8.6,ZT-1.2),new V3(X.cb,5.4,ZT),1,[0.2,0.2,0.22]); }
+  if(t3>=31.6&&t3<33.3) ST[2].show(CB.mouth(),potB.top(),0.5,MOLTEN.slag);
+  { const f=T<S[3]?0:0.75*seg(t3,31.7,33.3); const px=lerp(X.cb,26,es(t3,33.5,35.5)); potB.set(px,f,MOLTEN.slag,f>0?Math.max(0.35,1-(t3-33)/6):0); potB.g.visible=!(T>=S[4]); }
+
+  /* LF */
+  let roofY=10.5, elY=12;
+  if(t4>=2.5&&t4<3.5) roofY=lerp(10.5,5.9,es(t4,2.5,3.5)); else if(t4>=3.5&&t4<8.5) roofY=5.9; else if(t4>=8.5&&t4<10) roofY=lerp(5.9,10.5,es(t4,8.5,10));
+  if(t4>=3.5&&t4<4.5) elY=lerp(12,4.9,es(t4,3.5,4.5)); else if(t4>=4.5&&t4<8.5) elY=4.9; else if(t4>=8.5&&t4<9.5) elY=lerp(4.9,12,es(t4,8.5,9.5));
+  LF.roof.position.y=roofY; LF.el.position.y=elY-0.0;
+  const arc=(t4>=4.5&&t4<8.5)?1:0;
+  LF.light.intensity=arc*(1.5+Math.random()*3);
+  if(arc){ for(const tip of LF.tips){ const p=new V3(X.lf+tip.x,elY+0.05,ZT+tip.z); if(Math.random()<0.7) FX.emit(p,new V3(rnd(-0.5,0.5),rnd(0,1),rnd(-0.5,0.5)),rnd(0.05,0.15),[0.85,0.95,1],[0.5,0.7,1],rnd(1.2,2.4),0.4,0,0,1); } sparks(new V3(X.lf,5.2,ZT),0.4,0.6); }
+
+  /* RH */
+  const circ=(t5>=4&&t5<9.5)?Math.min(1,(t5-4)/0.6)*Math.min(1,(9.5-t5)/0.5):0;
+  RH.poolMat.color.copy(C_STEEL).multiplyScalar(circ*0.9);
+  RH.pool.position.y=8.0+Math.sin(T*8)*0.06;
+  RH.col.material.color.copy(C_STEEL).multiplyScalar(circ);
+  RH.col.visible=circ>0.01;
+  if(circ>0){
+    for(let i=0;i<rate(120*circ);i++){ tp.set(X.rh-0.8+rnd(-0.2,0.2),rnd(6.0,8.4),ZT+rnd(-0.2,0.2)); tv.set(rnd(-0.3,0.3),rnd(3,6),rnd(-0.3,0.3)); FX.emit(tp,tv,rnd(0.3,0.7),[0.7,0.85,1],[0.4,0.5,0.8],0.25,0.12,0,0.2,0.9); }
+    for(let i=0;i<rate(90*circ);i++){ tp.set(X.rh-0.8+rnd(-0.4,0.4),8.9,ZT+rnd(-0.4,0.4)); tv.set(rnd(-1.5,2),rnd(1.5,4),rnd(-1.5,1.5)); FX.emit(tp,tv,rnd(0.3,0.6),[1,0.85,0.5],[1,0.4,0.1],0.2,0.1,-9,0.2,1); }
+  }
+
+  /* 连铸 */
+  const pour=(t6>=4.5&&t6<15.2)?1:0;
+  if(pour){
+    ST[0].show(new V3(X.cc,14.2,ZT),new V3(X.cc,13.35,ZT),0.2,C_STEEL,true);
+    ST[1].show(new V3(X.cc+2,12.05,ZT),new V3(X.cc+2,11.5,ZT),0.12,C_STEEL,true);
+  }
+  const tLevel=T>=S[6]+4.5?1:0;
+  CC.tMat.color.copy(C_STEEL).multiplyScalar(0.85*tLevel*(T<S[6]+15.5?1:0.5));
+  const prog=es(T,S[6]+4.8,S[6]+8.2);
+  CC.strand.visible=prog>0.002;
+  { const sd=prog*SLEN, A=R*Math.PI/2; const xf=sd<A?cx0-R*Math.cos(sd/R):cx0+(sd-A); CC.clip.constant=xf+0.13; }
+  CC.light.intensity=prog*2.2;
+  const firstCut=S[6]+8.6, SI=2.4;
+  CC.slabs.forEach((s,i)=>{
+    const st=firstCut+i*SI;
+    if(T<st||T>=TOTAL){ s.visible=false; return; }
+    const x=xCut+3.2+(T-st)*3.0;
+    s.visible=x<104; s.position.set(x,yEnd,ZT);
+    const age=T-st; s.material.emissive.setRGB(0.75*Math.max(0.15,1-age/6),0.18*Math.max(0.1,1-age/5),0.03);
+  });
+  if(T>=S[6]+8.2&&T<TOTAL){ const ph=((T-firstCut)%SI+SI)%SI; if(ph>SI-1.0){ const p=new V3(xCut,yEnd+0.2,ZT); sparks(p,1.1,0.6); for(let i=0;i<rate(60);i++){ tv.set(rnd(-1,1),rnd(-4,-1),rnd(-1,1)); FX.emit(p,tv,rnd(0.4,0.8),[1,0.9,0.6],[1,0.3,0.05],0.25,0.1,-12,0.2,1);} } }
+
+  /* 天车停放 */
+  if(!craneSet){ const st=STAGES[stageAt(T)]; const xx=[X.arrive,X.kr,X.cv,X.cb,X.lf,X.rh,X.cc][stageAt(T)]; setCrane(clamp(xx,-40,60),0,20); }
+
+  /* 远景熔渣 */
+  window.__lavaFlows.forEach((m,i)=>{ const k=0.55+0.45*Math.sin(T*0.7+i*2.1); m.material.color.setRGB(k,0.38*k,0.08*k); });
+}
+
+/* ---------------- UI ---------------- */
+const pillsEl=$('#pills');
+const pills=STAGES.map((s,i)=>{const b=document.createElement('button');b.className='pill';b.textContent=(i+1)+' '+s.name;b.onclick=()=>{T=s.start+0.001;tweenTo(i);};pillsEl.appendChild(b);return b;});
+const scrub=$('#scrub'); scrub.max=TOTAL;
+let T=0, playing=true, speed=1, curStage=-1, scrubbing=false;
+function stageAt(t){ for(let i=STAGES.length-1;i>=0;i--) if(t>=STAGES[i].start) return i; return 0; }
+function phaseAt(i,t){ const ph=STAGES[i].phases; let txt=ph[0][1]; for(const p of ph) if(t-STAGES[i].start>=p[0]) txt=p[1]; return txt; }
+$('#play').onclick=()=>{playing=!playing;$('#play').textContent=playing?'❚❚':'▶';};
+$('#prev').onclick=()=>{const i=stageAt(T);const j=(T-STAGES[i].start<1.5&&i>0)?i-1:i;T=STAGES[j].start+0.001;tweenTo(j);};
+$('#next').onclick=()=>{const j=(stageAt(T)+1)%STAGES.length;T=STAGES[j].start+0.001;tweenTo(j);};
+$('#speed').onchange=e=>{speed=parseFloat(e.target.value);};
+scrub.addEventListener('input',()=>{T=parseFloat(scrub.value);scrubbing=true;});
+scrub.addEventListener('change',()=>{scrubbing=false;});
+$('#toggle').onclick=()=>{const p=$('#panel');p.classList.toggle('min');$('#toggle').textContent=p.classList.contains('min')?'展开':'收起';};
+let tween=null;
+function tweenTo(i){
+  if(!$('#follow').checked) return;
+  const c=STAGES[i].cam;
+  tween={t:0,p0:camera.position.clone(),t0:controls.target.clone(),p1:new V3(...c.p),t1:new V3(...c.t)};
+}
+controls.addEventListener('start',()=>{tween=null;});
+function setStageUI(i){
+  const s=STAGES[i];
+  pills.forEach((p,j)=>p.classList.toggle('on',j===i));
+  stationTags.forEach(t=>t.el.classList.toggle('active',t.i===i));
+  $('#no').textContent='STAGE '+String(i+1).padStart(2,'0')+' / '+String(STAGES.length).padStart(2,'0');
+  $('#name').innerHTML=s.name+(s.badge?'<span id="badge">'+s.badge+'</span>':'');
+  $('#desc').textContent=s.desc;
+  $('#look').innerHTML=s.look.map(x=>'<li>'+x+'</li>').join('');
+}
+function matName(t){
+  if(t<S[2]+17) return '铁水';
+  if(t<S[3]+24.5) return '半钢';
+  if(t<S[6]+8.2) return '钢水';
+  return '钢水 → 铸坯';
+}
+const proj=new V3();
+function updateLabels(T){
+  const w=canvas.clientWidth,h=canvas.clientHeight;
+  const place=(el,p,show)=>{
+    if(!show){el.style.opacity=0;return;}
+    proj.copy(p).project(camera);
+    if(proj.z>1||proj.z<-1){el.style.opacity=0;return;}
+    el.style.opacity=1; el.style.left=((proj.x+1)/2*w)+'px'; el.style.top=((1-proj.y)/2*h)+'px';
+  };
+  stationTags.forEach(t=>place(t.el,t.p,true));
+  dyn.forEach(d=>place(d.el,d.posFn(),d.showFn(T)));
+}
+
+function resize(){
+  const w=window.innerWidth,h=window.innerHeight;
+  renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix();
+  if(composer){ composer.setSize(w,h); if(composer.setPixelRatio) composer.setPixelRatio(renderer.getPixelRatio()); }
+  const sc=h*renderer.getPixelRatio()/(2*Math.tan(camera.fov*Math.PI/360));
+  FX.mat.uniforms.uScale.value=sc; SM.mat.uniforms.uScale.value=sc;
+}
+window.addEventListener('resize',resize); resize();
+
+let last=performance.now();
+function frame(now){
+  const rdt=Math.min(0.05,(now-last)/1000); last=now;
+  DT=playing&&!scrubbing?rdt*speed:0;
+  T+=DT; if(T>=TOTAL) T=0;
+  const si=stageAt(T);
+  if(si!==curStage){ curStage=si; setStageUI(si); if(DT>0) tweenTo(si); }
+  update(T);
+  FX.update(DT); SM.update(DT);
+  if(tween){ tween.t=Math.min(1,tween.t+rdt/1.8); const k=sm(tween.t); camera.position.lerpVectors(tween.p0,tween.p1,k); controls.target.lerpVectors(tween.t0,tween.t1,k); if(tween.t>=1) tween=null; }
+  controls.update();
+  $('#phase').textContent=phaseAt(si,T);
+  const r=reading(T);
+  $('#gT').textContent=Math.round(r[3]); $('#gC').textContent=r[0].toFixed(2); $('#gV').textContent=r[1].toFixed(3); $('#gS').textContent=r[2].toFixed(3);
+  $('#mName').textContent=matName(T);
+  if(!scrubbing) scrub.value=T;
+  $('#clock').textContent=T.toFixed(1).padStart(5,'0')+' / '+TOTAL+' s';
+  updateLabels(T);
+  drawSection(SECT,T);
+  if(composer) composer.render(); else renderer.render(scene,camera);
+  requestAnimationFrame(frame);
+}
+if(window.innerWidth<820){$('#panel').classList.add('min');$('#toggle').textContent='展开';}
+tweenTo(0);
+$('#loading').style.display='none';
+window.__demo={setT:v=>{T=v;},pause:()=>{playing=false;},STAGES,TOTAL};
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
