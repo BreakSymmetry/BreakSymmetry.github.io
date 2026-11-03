@@ -1,0 +1,47 @@
+/* Grid and pagination used by the legacy Hexo pages.
+   Based on Bootstrap 3.3.7, copyright 2011–2016 Twitter, Inc., MIT licensed. */
+*, *::before, *::after { box-sizing: border-box; }
+a { text-decoration: none; }
+img { vertical-align: middle; }
+.text-muted { color: #777; }
+.container {
+  padding-inline: 15px;
+  margin-inline: auto;
+}
+.row { margin-inline: -15px; }
+.container::before, .container::after, .row::before, .row::after {
+  display: table;
+  content: " ";
+}
+.container::after, .row::after { clear: both; }
+.col-lg-8, .col-lg-10, .col-md-10 {
+  position: relative;
+  min-height: 1px;
+  padding-inline: 15px;
+}
+.pagination {
+  padding-left: 0;
+  margin: 20px 0;
+  border-radius: 4px;
+}
+.pagination > li > a {
+  position: relative;
+  float: left;
+  padding: 6px 12px;
+  margin-left: -1px;
+  line-height: 1.42857143;
+}
+@media (min-width: 768px) {
+  .container { width: 750px; }
+}
+@media (min-width: 992px) {
+  .container { width: 970px; }
+  .col-md-10 { float: left; width: 83.33333333%; }
+  .col-md-offset-1 { margin-left: 8.33333333%; }
+}
+@media (min-width: 1200px) {
+  .container { width: 1170px; }
+  .col-lg-8 { float: left; width: 66.66666667%; }
+  .col-lg-10 { float: left; width: 83.33333333%; }
+  .col-lg-offset-2 { margin-left: 16.66666667%; }
+}

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from '@/lib/site-link';
 import { journalPostsByDate } from '@/lib/journal';
 import { isChinaSite, siteOrigin } from '@/lib/site-variant';
 

@@ -6,7 +6,7 @@ const projectDir = process.cwd();
 const outputDir = path.join(projectDir, process.env.STATIC_EXPORT_DIR ?? 'static-export');
 const port = process.env.STATIC_EXPORT_PORT ?? '4173';
 const origin = `http://127.0.0.1:${port}`;
-const siteVariant = process.env.NEXT_PUBLIC_SITE_VARIANT === 'cn' ? 'cn' : 'net';
+const siteVariant = process.env.NEXT_PUBLIC_SITE_VARIANT === 'online' ? 'online' : 'net';
 const journalSlugs = [
   'state-before-score',
   'structures-are-ensembles',
@@ -22,6 +22,11 @@ const routes = ['/', '/games', '/medicine-ai', '/gameinfo', '/journal', ...journ
 await rm(outputDir, { recursive: true, force: true });
 await mkdir(outputDir, { recursive: true });
 await cp(path.join(projectDir, 'dist/client'), outputDir, { recursive: true });
+if (siteVariant === 'net') {
+  // Domestic game agreements and filing-linked documents must never be
+  // published as part of the international site.
+  await rm(path.join(outputDir, 'static'), { recursive: true, force: true });
+}
 
 const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 const server = spawn(npmCommand, ['run', 'start'], {

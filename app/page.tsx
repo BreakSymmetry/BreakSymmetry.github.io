@@ -7,7 +7,7 @@ export default function Home() {
       initialLocale={isChinaSite ? 'zh' : 'en'}
       companyName={isChinaSite ? '成都打破对称科技有限公司' : 'BREAK SYMMETRY TECHNOLOGY'}
       domesticDomainLink={isChinaSite
-        ? <a href="https://breaksymmetry.cn">.CN</a>
+        ? <a href="https://www.breaksymmetry.online">.ONLINE</a>
         : undefined}
       domesticLegalLinks={isChinaSite
         ? <>
