@@ -20,9 +20,7 @@ file replaces the same path.
   public-security filings plus domestic game agreement links. The legacy Hexo
   project records its hosting target as Tencent Cloud COS bucket
   `page-1305873037` in `ap-shanghai`; the new domestic build should continue to
-  publish there through its existing EdgeOne hostname. As checked on 2026-11-03,
-  the `.cn` apex and `www` have no public DNS, and the `.online` apex has
-  no public web record.
+  publish there through its existing EdgeOne hostname.
 - Only the `.net` build writes a GitHub Pages `CNAME` file. The `.online` build does
   not, because its domain mapping belongs in Tencent Cloud COS/CDN rather than
   in the uploaded files.
@@ -32,14 +30,13 @@ file replaces the same path.
 ## Local static build
 
 Run `npm run build:static:net` for the international site or
-`npm run build:static:cn` for the domestic site (alias for
-`npm run build:static:online`). The deployable files are
+`npm run build:static:online` for the domestic site. The deployable files are
 written to `static-export/`. To preserve two local outputs, set
 `STATIC_EXPORT_DIR` to a different directory for one of the commands.
 
 ## Tencent Cloud domestic deployment
 
-1. Build with `npm run build:static:cn` and verify that the HTML canonical is
+1. Build with `npm run build:static:online` and verify that the HTML canonical is
    `https://www.breaksymmetry.online`, the two filing links and game agreements
    are present, and there is no GitHub Pages `CNAME`.
 2. Confirm the EdgeOne origin and COS static website routing. Back up existing
